@@ -9,6 +9,11 @@ const loaders = {
 			loader: 'eslint-loader'
 		},
 		{
+			test: /\.vue$/,
+			loader: 'vue-loader'
+			// options: vueLoaderConfig
+		},
+		{
 			test: /\.js$/,
 			loader: [
 				'babel-loader',

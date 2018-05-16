@@ -17,11 +17,12 @@ module.exports = {
 			: config.dev.assetsPublicPath
 	},
 	resolve: {
-		extensions: ['.js', '.json'],
+		extensions: ['.js', '.json', '.vue'],
 		modules: [
 			resolve('node_modules')
 		],
 		alias: {
+			'vue$': 'vue/dist/vue.common.js',
 			'src': resolve('src')
 		}
 	},

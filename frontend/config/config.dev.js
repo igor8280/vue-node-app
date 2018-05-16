@@ -7,6 +7,7 @@ const baseWebpackConfig = require('./config.base');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = merge(baseWebpackConfig, {
 	// split to multiple entry points (src and vendor)
@@ -33,6 +34,7 @@ module.exports = merge(baseWebpackConfig, {
 			template: 'index.html',
 			inject: true
 		}),
-		new FriendlyErrorsPlugin()
+		new FriendlyErrorsPlugin(),
+		new VueLoaderPlugin()
 	]
 });

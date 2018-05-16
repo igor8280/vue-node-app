@@ -4,13 +4,17 @@ const loaders = {
 	rules: [
 		{
 			enforce: 'pre',
-			test: /\.js$/,
+			test: /\.(js|vue)$/,
 			exclude: /node_modules/,
 			loader: 'eslint-loader'
 		},
 		{
 			test: /\.vue$/,
-			loader: 'vue-loader'
+			// loader: 'vue-loader'
+			use: [
+				'vue-loader',
+				'vue-style-loader'
+			]
 			// options: vueLoaderConfig
 		},
 		{

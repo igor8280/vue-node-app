@@ -26,13 +26,6 @@ router.route('/')
 		});
 	});
 
-	// .get((req, res) => {
-	// 	User.findById(req.params.id, (err, user) => {
-	// 		if (err) res.send(err);
-	// 		res.json(user);
-	// 	});
-	// });
-
 router.route('/:id')
 	.get((req, res) => {
 		User.findById(req.params.id, (err, user) => {
@@ -40,7 +33,5 @@ router.route('/:id')
 			res.json(user);
 		});
 	});
-// router.get('/:id', (req, res, next) => {
-// 	res.json({ params: req.params });
-// });
+
 module.exports = router;

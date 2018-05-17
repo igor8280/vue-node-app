@@ -1,7 +1,7 @@
-// import './style/test.css';
-// import './style/font.css';
-// import './style/test-s.scss';
-// import './style/test-l.less';
+// import './styles/test.css';
+// import './styles/font.css';
+// import './styles/test-s.scss';
+// import './styles/test-l.less';
 // import image from './assets/img/test.jpeg';
 //
 // console.log('RADI!!!');
@@ -28,7 +28,7 @@ import routes from './routes';
 // import locale from 'element-ui/lib/locale/lang/en';
 // import VueAuthImage from 'vue-auth-image';
 // import custom from '../static/js/custom';
-// import '../static/style/theme/vms/index.css';
+// import '../static/styles/theme/vms/index.css';
 
 // Setup Vue
 Vue.use(VueRouter);

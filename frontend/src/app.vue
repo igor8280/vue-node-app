@@ -1,12 +1,10 @@
 <template>
     <div id="app">
         <div id="page-wrap">
-            <p>fdsjkldfsajkfdsjklfsd</p>
-            <!--<transition  name="fade" mode="out-in" v-on:before-enter="beforeEnter" v-on:enter="enter" v-on:after-enter="afterEnter">-->
-                <!--<router-view v-loading.fullscreen.lock="loading"-->
-                             <!--element-loading-text="Loading...">-->
-                <!--</router-view>-->
-            <!--</transition>-->
+            <transition  name="fade" mode="out-in" v-on:before-enter="beforeEnter" v-on:enter="enter" v-on:after-enter="afterEnter">
+                <!--v-loading.fullscreen.lock="loading" element-loading-text="Loading..."-->
+                <router-view></router-view>
+            </transition>
         </div>
     </div>
 </template>
@@ -40,10 +38,10 @@
 
 </script>
 
-<style src="./style/test-s.scss" lang="scss" />
-<style src="./style/test-l.less" lang="less" />
-<style src="./style/font.css" lang="css" />
-<style src="./style/test.css" lang="css" />
+<style src="./styles/test-s.scss" lang="scss" />
+<style src="./styles/test-l.less" lang="less" />
+<style src="./styles/font.css" lang="css" />
+<style src="./styles/test.css" lang="css" />
 
 <style>
     #app {

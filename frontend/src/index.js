@@ -118,5 +118,5 @@ export const eventBus = new Vue();
 //
 new Vue({
 	router,
-	render: createElement => createElement(require('./app.vue'))
+	render: createElement => createElement(require('./app.vue').default)
 }).$mount('#container');

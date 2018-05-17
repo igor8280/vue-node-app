@@ -1,3 +1,4 @@
+const vueLoaderConfig = require('./vue-loader.conf');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const loaders = {
@@ -10,12 +11,8 @@ const loaders = {
 		},
 		{
 			test: /\.vue$/,
-			// loader: 'vue-loader'
-			use: [
-				'vue-loader',
-				'vue-style-loader'
-			]
-			// options: vueLoaderConfig
+			loader: 'vue-loader',
+			options: vueLoaderConfig
 		},
 		{
 			test: /\.js$/,

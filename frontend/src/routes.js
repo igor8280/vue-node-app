@@ -7,6 +7,14 @@ export default [
 		// }
 	},
 	{
+		path: '/countries',
+		component: require('./views/countries/list').default
+	},
+	{
+		path: '/image-cropper',
+		component: require('./views/image-cropper/cropper').default
+	},
+	{
 		path: '/403',
 		component: require('./views/errors/403').default
 	},

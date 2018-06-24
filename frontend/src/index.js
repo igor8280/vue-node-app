@@ -45,7 +45,7 @@ const router = new VueRouter({
 
 // router.beforeEach((to, from, next) => {
 // 	window.historyFrom = from;
-// 	const auth = router.app.$options.store.state.auth;
+// 	const auth = router.index.$options.store.state.auth;
 // 	if (to.matched.some(record => record.meta.requiresAuth)) {
 // 		if (!auth.isLoggedIn)
 // 			next('/signin');
@@ -63,7 +63,7 @@ export const eventBus = new Vue();
 // new Vue({
 // router,
 // store,
-// 	render: h => h(require('./app.vue'))
+// 	render: h => h(require('./index.vue'))
 // }).$mount('#container');
 //
 new Vue({

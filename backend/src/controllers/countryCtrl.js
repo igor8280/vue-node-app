@@ -43,11 +43,14 @@ export default ({ config, db }) => {
 
 	// 'v1/countries' - create endpoint for GET (Read)
 	api.get('/', (req, res) => {
-		let page = req.page || 1;
-		let limit = req.limit || 12;
+		console.log('query', req.query.sort);
+		// parse URL query string (for pagination)
+		let page = req.query.page || 1;
+		let limit = req.query.limit || 10;
+		let sort = req.query.sort || {'name': 1};
 
 		// with AGGREGATE pagination (https://www.npmjs.com/package/mongoose-aggregate-paginate/v/1.1.2)
-		CountryModel.aggregatePaginate({}, {"page": page, "limit": limit} ,(err, countries, pageCount, itemCount) => {
+		CountryModel.aggregatePaginate({}, {"page": page, "limit": limit, "sortBy": sort} ,(err, countries, pageCount, itemCount) => {
 			// on error return err object
 			if (err) res.send(err);
 

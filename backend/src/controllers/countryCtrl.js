@@ -46,13 +46,27 @@ export default ({ config, db }) => {
 
 	// 'v1/countries' - create endpoint for GET (Read)
 	api.get('/', (req, res) => {
-		CountryModel.find({}, (err, countries) => {
+		let page = req.page || 1;
+		let limit = req.limit || 12;
+
+		// with AGGREGATE pagination (https://www.npmjs.com/package/mongoose-aggregate-paginate/v/1.1.2)
+		CountryModel.aggregatePaginate({}, {"page": page, "limit": limit} ,(err, countries, pageCount, itemCount) => {
 			// on error return err object
 			if (err) res.send(err);
 
 			// return data (plural!!!)
-			res.json(countries);
+			let data = {"content": countries, "pages": pageCount, "total": itemCount, "page": page, "limit": limit};
+			res.json(data);
 		});
+
+		// plain PAGINATION (for simpler queries - https://www.npmjs.com/package/mongoose-paginate/v/5.0.3)
+		// CountryModel.paginate({}, {"page": page, "limit": limit} ,(err, countries) => {
+		// 	// on error return err object
+		// 	if (err) res.send(err);
+		//
+		// 	// return data (plural!!!)
+		// 	res.json(countries);
+		// });
 	});
 
 	// 'v1/countries/:id' - Read one

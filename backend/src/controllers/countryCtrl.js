@@ -36,11 +36,8 @@ export default ({ config, db }) => {
 			// on error return err object
 			if (err) res.send(err);
 
-			// create data for response
-			let data = req.body;
-			data._id = countryModel._id;
-			// else return message
-			res.json({ message: 'Country added successfully!', "data": data});
+			// else return message and inserted data
+			res.json({ 'message': 'Country added successfully!', 'data': countryModel});
 		});
 	});
 

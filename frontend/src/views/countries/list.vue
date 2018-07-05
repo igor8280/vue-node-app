@@ -90,6 +90,15 @@
                 </el-table-column>
             </el-table>
             <!--End Table-->
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="pagination.page"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="pagination.limit"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="pagination.total">
+            </el-pagination>
         </el-col>
         <el-col :span="6">
             <h1>Sidebar</h1>
@@ -103,6 +112,12 @@
 		data() {
 			return {
 				countries: [],
+                pagination: {
+					page: 1,
+                    limit: 10,
+                    total: 0,
+                    sort: '-id'
+                },
 				gridLoad: false,
 				resource: {}
 			};
@@ -113,20 +128,32 @@
 		},
 		methods: {
 			getCountries() {
-				let params = {
-					'size': 10,
-					'page': 0
-				};
+				// let params = {
+				// 	'size': 10,
+				// 	'page': 1
+				// };
 				this.gridLoad = true;
-				this.resource.get(params).then((response) => {
+				this.resource.get(this.pagination).then((response) => {
 					return response.json();
 				}).then((data) => {
 					this.countries = data.content;
+					this.pagination.page = data.page;
+					this.pagination.limit = data.limit;
+					this.pagination.total = data.total;
 					this.gridLoad = false;
 				}, (error) => {
 					console.log(error);
 				});
-			}
+			},
+			handleSizeChange(size) {
+				this.pagination.limit = size;
+				this.pagination.page = 1;
+				this.getCountries();
+            },
+            handleCurrentChange(page) {
+				this.pagination.page = page;
+				this.getCountries();
+            }
 		}
 	};
 </script>

@@ -28,7 +28,8 @@ module.exports = {
 		assetsPublicPath: '/',
 		proxyTable: {
 			'/proxy': {
-				target: 'http://vms-dev.united.cloud:8080/api/v1',
+				// target: 'http://vms-dev.united.cloud:8080/api/v1',
+				target: 'http://localhost:3006/v1',
 				pathRewrite: {
 					'/proxy': ''
 				},

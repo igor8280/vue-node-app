@@ -2,7 +2,7 @@ import http from 'http';
 import express from 'express';
 import bodyParser from 'body-parser';
 import swaggerUI from 'swagger-ui-express';
-import swaggerDocument from './swagger.json';
+import swaggerDocument from './swagger';
 // import mongoose from 'mongoose';
 
 import config from './config';
@@ -17,7 +17,11 @@ app.use(bodyParser.json({
 }));
 
 // swagger
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument, {
+	swaggerOptions: {
+		docExpansion : "none"
+	}
+}));
 
 // passport config
 

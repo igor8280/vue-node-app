@@ -10,7 +10,7 @@ import mongooseAggregatePaginate from 'mongoose-aggregate-paginate';
 let Schema = mongoose.Schema;
 
 let CountryModelSchema = new Schema({
-	name: {type:String, required: true},
+	name: {type:String, required: true, maxlength: 100},
 	shortListed: {type: Boolean, default: false},
 	isoCodeTwo: {type: String, minlength: 2, maxlength: 2, required: true},
 	isoCodeThree: {type: String, minlength: 3, maxlength: 3, required: true},

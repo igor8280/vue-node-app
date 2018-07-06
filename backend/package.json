@@ -24,7 +24,7 @@
       "no-unused-vars": 1
     }
   },
-  "author": "Igor Gojkovic <igor.gojkovic@team4js.com>",
+  "author": "Igor Gojkovic <igor.gojkovic@team4js.com>, Milos Markovic <milos.markovic@team4js.com>, Andrija Gojkovic <andrija.gojkovic@team4js.com>",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.3",

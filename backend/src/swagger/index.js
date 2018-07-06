@@ -1,6 +1,7 @@
 // import countries from './countries';
 const apiList = [
-	require('./countries').default
+	require('./countries').default,
+	require('./languages').default
 ];
 
 let tags = [];

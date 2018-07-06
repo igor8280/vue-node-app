@@ -31,7 +31,6 @@
     "express": "^4.16.3",
     "mongoose": "^5.1.6",
     "mongoose-aggregate-paginate": "^1.1.2",
-    "mongoose-paginate": "^5.0.3",
     "swagger-ui-express": "^3.0.10"
   },
   "devDependencies": {

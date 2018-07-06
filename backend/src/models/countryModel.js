@@ -1,9 +1,6 @@
 // http://mongoosejs.com/docs/schematypes.html
 import mongoose from 'mongoose';
 
-// https://www.npmjs.com/package/mongoose-paginate/v/5.0.3
-// import mongoosePaginate from 'mongoose-paginate';
-
 // https://www.npmjs.com/package/mongoose-aggregate-paginate/v/1.1.2
 import mongooseAggregatePaginate from 'mongoose-aggregate-paginate';
 
@@ -25,7 +22,6 @@ let CountryModelSchema = new Schema({
 }, {collection: "countries"});
 
 // add pagination plugin
-// CountryModelSchema.plugin(mongoosePaginate);
 CountryModelSchema.plugin(mongooseAggregatePaginate);
 
 module.exports = mongoose.model('CountryModel', CountryModelSchema);

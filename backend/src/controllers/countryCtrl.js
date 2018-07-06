@@ -9,7 +9,7 @@ export default ({ config, db }) => {
 	// CRUD - Create Read Update Delete
 
 	// 'v1/countries/add' - creating endpoint for POST (Create)
-	api.post('/add', (req, res) => {
+	api.post('/', (req, res) => {
 		// create data model
 		let countryModel = new CountryModel();
 
@@ -58,15 +58,6 @@ export default ({ config, db }) => {
 			let data = {"content": countries, "pages": pageCount, "total": itemCount, "page": page, "limit": limit};
 			res.json(data);
 		});
-
-		// plain PAGINATION (for simpler queries - https://www.npmjs.com/package/mongoose-paginate/v/5.0.3)
-		// CountryModel.paginate({}, {"page": page, "limit": limit} ,(err, countries) => {
-		// 	// on error return err object
-		// 	if (err) res.send(err);
-		//
-		// 	// return data (plural!!!)
-		// 	res.json(countries);
-		// });
 	});
 
 	// 'v1/countries/:id' - Read one

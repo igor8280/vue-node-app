@@ -1,6 +1,8 @@
 import http from 'http';
 import express from 'express';
 import bodyParser from 'body-parser';
+import swaggerUI from 'swagger-ui-express';
+import swaggerDocument from './swagger';
 // import mongoose from 'mongoose';
 
 import config from './config';
@@ -12,6 +14,13 @@ app.server = http.createServer(app);
 // middleware
 app.use(bodyParser.json({
 	limit: config.bodyLimit
+}));
+
+// swagger
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument, {
+	swaggerOptions: {
+		docExpansion : "none"
+	}
 }));
 
 // passport config

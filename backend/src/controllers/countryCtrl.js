@@ -43,14 +43,20 @@ export default ({ config, db }) => {
 
 	// 'v1/countries' - create endpoint for GET (Read)
 	api.get('/', (req, res) => {
-		console.log('query', req.query.sort);
 		// parse URL query string (for pagination)
 		let page = req.query.page || 1;
 		let limit = req.query.limit || 10;
 		let sort = req.query.sort || {'name': 1};
 
+		// search with aggregation using Regex()
+		let agg = CountryModel.aggregate();
+		if (req.query.search) {
+			let search = new RegExp(`^${req.query.search}`, 'i');
+			agg.match( {$or :[{name: search}, {isoCodeTwo: search}, {isoCodeThree: search}]});
+		}
+
 		// with AGGREGATE pagination (https://www.npmjs.com/package/mongoose-aggregate-paginate/v/1.1.2)
-		CountryModel.aggregatePaginate({}, {"page": page, "limit": limit, "sortBy": sort} ,(err, countries, pageCount, itemCount) => {
+		CountryModel.aggregatePaginate(agg, {"page": page, "limit": limit, "sortBy": sort} ,(err, countries, pageCount, itemCount) => {
 			// on error return err object
 			if (err) res.send(err);
 

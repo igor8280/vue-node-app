@@ -45,7 +45,7 @@
 					},
 					{
 						label: 'Cropper',
-                        icon: 'el-icon-picture',
+						icon: 'el-icon-picture',
 						path: '/image-cropper'
 					}
 				]
@@ -56,6 +56,9 @@
 				this.$store.commit('toggleMenuCollapse');
 			},
 			selectMenu(index) {
+				// clear session storage
+				this.$store.commit('clearSession');
+
 				this.$router.push(index);
 			}
 		}

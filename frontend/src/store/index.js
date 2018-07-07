@@ -22,11 +22,11 @@ const store = new Vuex.Store({
 });
 
 store.subscribe((mutation, state) => {
-	// choose which properties are stored in localStorage
-	let storage = {
-		collapsedMenu: state.collapsedMenu
-	};
-	localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
+	// data intended to store in local storage
+	localStorage.setItem(STORAGE_KEY, JSON.stringify(state.local));
+
+	// data intended to store in session storage
+	sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state.session));
 });
 
 export default store;

@@ -2,93 +2,86 @@
 	<div>
 		<el-row>
 			<el-col :span="6">
-				<search-box v-model="search" @input="getCountriesBySearch()" />
+				<search-box v-model="search" @input="getLanguagesBySearch()" />
 			</el-col>
 		</el-row>
 		<el-row>
 			<el-col>
 				<!--Table-->
-				<el-table v-if="countries.length"
-						  :data="countries"
+				<el-table v-if="languages.length"
+						  :data="languages"
 						  :default-sort="sort"
-						  @sort-change="newSort => $utils.changeSort(newSort, sort, $refs.country, getCountries)"
-						  ref="country"
+						  @sort-change="newSort => $utils.changeSort(newSort, sort, $refs.language, getLanguages)"
+						  ref="language"
 						  v-loading="gridLoad"
 						  element-loading-text="Loading..."
 						  border
 						  stripe
 						  style="width: 100%">
 					<el-table-column
-							type="selection"
-							width="30">
+						type="selection"
+						width="30">
 					</el-table-column>
 					<el-table-column
-							align="left"
-							prop="name"
-							label="Name"
-							sortable="custom"
-							width="560">
+						align="left"
+						prop="name"
+						label="Name"
+						sortable="custom"
+						width="560">
 					</el-table-column>
 					<el-table-column
-							align="center"
-							prop="id"
-							label="ID"
-							sortable="custom"
-							width="50">
+						align="center"
+						prop="id"
+						label="ID"
+						sortable="custom"
+						width="50">
 					</el-table-column>
 					<el-table-column
-							align="center"
-							prop="isoCodeTwo"
-							label="ISO Code Two"
-							sortable="custom"
-							width="140">
+						align="center"
+						prop="isoCodeOne"
+						label="ISO Code One"
+						sortable="custom"
+						width="140">
 					</el-table-column>
 					<el-table-column
-							align="center"
-							prop="isoCodeThree"
-							label="ISO Code Three"
-							sortable="custom"
-							width="160">
+						align="center"
+						prop="isoCodeTwoB"
+						label="ISO Code Two B"
+						sortable="custom"
+						width="140">
 					</el-table-column>
 					<el-table-column
-							align="center"
-							width="120"
-							prop="currency"
-							label="Currency"
-							sortable="custom">
+						align="center"
+						prop="isoCodeTwoT"
+						label="ISO Code Two T"
+						sortable="custom"
+						width="140">
 					</el-table-column>
 					<el-table-column
-							align="center"
-							width="120"
-							prop="taxRate"
-							label="Tax Rate"
-							sortable="custom">
+						align="center"
+						width="160"
+						prop="description"
+						label="Description"
+						sortable="custom">
 					</el-table-column>
 					<el-table-column
-							align="center"
-							width="160"
-							prop="description"
-							label="Description"
-							sortable="custom">
-					</el-table-column>
-					<el-table-column
-							align="center"
-							width="140"
-							prop="shortlisted"
-							label="Short listed"
-							sortable="custom">
+						align="center"
+						width="140"
+						prop="shortlisted"
+						label="Short listed"
+						sortable="custom">
 						<template slot-scope="scope">
 							<el-icon v-if="scope.row.shortlisted" name="el-input__icon el-icon-check vms-green"></el-icon>
 							<el-icon v-else name="el-input__icon el-icon-close vms-red"></el-icon>
 						</template>
 					</el-table-column>
 					<el-table-column
-							align="center"
-							prop=""
-							label="">
+						align="center"
+						prop=""
+						label="">
 					</el-table-column>
 				</el-table>
-				<pagination v-model="pagination" @input="getCountries"/>
+				<pagination v-model="pagination" @input="getLanguages"/>
 			</el-col>
 		</el-row>
 	</div>
@@ -96,10 +89,10 @@
 
 <script>
 	export default {
-		name: 'Countries',
+		name: 'Languages',
 		data() {
 			return {
-				countries: [],
+				languages: [],
 				pagination: {},
 				sort: {
 					prop: 'name',
@@ -112,13 +105,13 @@
 		mounted() {
 			this.$store.dispatch('setHeader', {
 				type: 'main',
-				title: 'Countries list'
+				title: 'Languages list'
 			});
 			this.$utils.autoLoad(this);
-			this.getCountries();
+			this.getLanguages();
 		},
 		methods: {
-			getCountries() {
+			getLanguages() {
 				let params = {
 					...this.pagination,
 					sort: this.$utils.sortToString(this.sort)
@@ -128,10 +121,10 @@
 					params.search = this.search;
 
 				this.gridLoad = true;
-				this.$api.countries.get(params).then((response) => {
+				this.$api.languages.get(params).then((response) => {
 					return response.json();
 				}).then((data) => {
-					this.countries = data.content;
+					this.languages = data.content;
 					this.pagination.page = +data.page;
 					this.pagination.limit = +data.limit;
 					this.pagination.total = +data.total;
@@ -141,9 +134,9 @@
 					console.log(error);
 				});
 			},
-			getCountriesBySearch() {
+			getLanguagesBySearch() {
 				this.pagination.page = 1;
-				this.getCountries();
+				this.getLanguages();
 			}
 		}
 	};

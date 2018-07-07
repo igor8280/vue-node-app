@@ -2,6 +2,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
 
+import api from './resources';
+import utils from './utilities';
+
 import store from './store';
 import routes from './routes';
 
@@ -17,6 +20,13 @@ Vue.use(VueResource);
 Vue.use(ElementUI, {
 	locale
 });
+
+Vue.prototype.$api = api;
+Vue.prototype.$utils = utils;
+
+// global components
+Vue.component('pagination', require('./components/pagination').default);
+Vue.component('search-box', require('./components/search-box').default);
 
 // Set localization
 Vue.config.lang = 'en';

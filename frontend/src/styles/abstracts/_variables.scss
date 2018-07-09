@@ -1,0 +1,28 @@
+/**
+*
+*	variables for fonts
+*
+*/
+
+$font-regular: 'open_sansregular';
+$font-bold: 'open_sansbold';
+$font-italic: 'open_sansitalic';
+$font-bold-italic: 'open_sansbold_italic';
+$font-extra-bold: 'open_sansextrabold';
+$font-extra-bold-italic: 'open_sansextrabold_italic';
+$font-light: 'open_sanslight';
+$font-light-italic: 'open_sanslight_italic';
+$font-semi-bold: 'open_sanssemibold';
+$font-semi-bold-italic: 'open_sanssemibold_italic';
+
+/**
+*
+*	variables for element-ui
+*
+*/
+
+/* theme color */
+$--color-primary: #5daf71;
+
+/* icon font path, required */
+$--font-path: '~element-ui/lib/theme-chalk/fonts';

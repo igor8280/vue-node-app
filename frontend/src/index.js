@@ -10,9 +10,8 @@ import routes from './routes';
 
 import ElementUI from 'element-ui';
 import locale from 'element-ui/lib/locale/lang/en';
-import 'element-ui/lib/theme-chalk/index.css';
-// import './styles/element-variables.scss';
-import 'cropperjs/dist/cropper.min.css';
+// import 'element-ui/lib/theme-chalk/index.css';
+import './styles/main.scss';
 
 // Setup Vue
 Vue.use(VueRouter);

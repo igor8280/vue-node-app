@@ -17,7 +17,7 @@
                         </el-select>
                     </el-col>
 
-                    <el-col :span="3" class="text-center">
+                    <el-col :span="3">
                         <p>Flip</p>
                         <el-button @click="flipHorizontal">H</el-button>
                         <el-button @click="flipVertical">V</el-button>
@@ -160,14 +160,3 @@
 		}
 	};
 </script>
-
-<style scoped>
-    .image-box {
-        max-height: 80vh;
-        max-width: 100%;
-    }
-
-    .text-center {
-        text-align: center;
-    }
-</style>

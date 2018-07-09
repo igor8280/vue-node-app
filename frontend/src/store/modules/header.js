@@ -18,7 +18,6 @@ const mutations = {
 
 const actions = {
 	setHeader: (context, value) => {
-		console.log(context);
 		context.commit('setTitle', value.title);
 		context.commit('setType', value.type);
 	}

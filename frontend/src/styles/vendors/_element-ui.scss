@@ -1,0 +1,15 @@
+@import "../../../node_modules/element-ui/packages/theme-chalk/src/index";
+
+/*
+*
+*	extending / fixing element-ui theme
+*
+*/
+
+.el-row {
+	margin: 10px 0px;
+}
+
+.el-menu {
+	border-right: none;
+}

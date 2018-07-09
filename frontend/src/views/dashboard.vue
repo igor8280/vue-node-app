@@ -15,14 +15,13 @@
 
 <script>
 	export default {
-		name: 'Welcome',
+		name: 'Dashboard',
 
 		mounted() {
 			this.$store.dispatch('setHeader', {
 				type: 'main',
 				title: 'Dashboard'
 			});
-			console.log('dashboard');
 		},
 
 		methods: {

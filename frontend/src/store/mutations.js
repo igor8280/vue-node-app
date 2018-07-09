@@ -7,5 +7,17 @@ export const setMenuVisibility = (state, value) => {
 };
 
 export const toggleMenuCollapse = state => {
-	state.collapsedMenu = !state.collapsedMenu;
+	state.local.collapsedMenu = !state.local.collapsedMenu;
+};
+
+export const saveLocal = (state, payload) => {
+	state.local[payload.key] = payload.value;
+};
+
+export const saveSession = (state, payload) => {
+	state.session[payload.key] = payload.value;
+};
+
+export const clearSession = state => {
+	state.session = {};
 };

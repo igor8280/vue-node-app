@@ -8,42 +8,42 @@ export default ({ config, db }) => {
 	let api = Router();
 
 	// LOGIN - create access and refresh token
-	api.post('/login', (req, res) => {
-		// ask for new access and refresh tokens
-		if (req.body.grant_type === 'password') {
-			UserModel.findOne( {'username': req.body.username} ).then((user) => {
-				// if user does NOT exists
-				if (!user) return res.status(401).json({ message: 'Authentication failed. User not found.' });
-
-				// if user exist, but password is wrong
-				if (!user.comparePassword(req.body.password))
-					res.status(401).json({ message: 'Authentication failed. Wrong password.' });
-
-				// if everything is ok, check for grant_type
-				// if grant_type=password, create new access and refresh token
-				let response = user.generateAccessToken();
-
-				// add headers according to - https://www.oauth.com/oauth2-servers/access-tokens/access-token-response/
-				res.append('Cache-Control', 'no-store');
-				res.append('Pragma', 'no-cache');
-
-				res.json(response);
-			}).catch((err) => {
-				res.send(err);
-			});
-		}
-		// ask for new access token (based on info in refresh token)
-		else if (req.body.grant_type === 'refresh_token') {
-			let user = new UserModel();
-			let response = user.refreshAccessToken(req.body.refresh_token);
-
-			// add headers according to - https://www.oauth.com/oauth2-servers/access-tokens/access-token-response/
-			res.append('Cache-Control', 'no-store');
-			res.append('Pragma', 'no-cache');
-
-			res.json(response);
-		}
-	});
+	// api.post('/login', (req, res) => {
+	// 	// ask for new access and refresh tokens
+	// 	if (req.body.grant_type === 'password') {
+	// 		UserModel.findOne( {'username': req.body.username} ).then((user) => {
+	// 			// if user does NOT exists
+	// 			if (!user) return res.status(401).json({ message: 'Authentication failed. User not found.' });
+	//
+	// 			// if user exist, but password is wrong
+	// 			if (!user.comparePassword(req.body.password))
+	// 				res.status(401).json({ message: 'Authentication failed. Wrong password.' });
+	//
+	// 			// if everything is ok, check for grant_type
+	// 			// if grant_type=password, create new access and refresh token
+	// 			let response = user.generateAccessToken();
+	//
+	// 			// add headers according to - https://www.oauth.com/oauth2-servers/access-tokens/access-token-response/
+	// 			res.append('Cache-Control', 'no-store');
+	// 			res.append('Pragma', 'no-cache');
+	//
+	// 			res.json(response);
+	// 		}).catch((err) => {
+	// 			res.send(err);
+	// 		});
+	// 	}
+	// 	// ask for new access token (based on info in refresh token)
+	// 	else if (req.body.grant_type === 'refresh_token') {
+	// 		let user = new UserModel();
+	// 		let response = user.refreshAccessToken(req.body.refresh_token);
+	//
+	// 		// add headers according to - https://www.oauth.com/oauth2-servers/access-tokens/access-token-response/
+	// 		res.append('Cache-Control', 'no-store');
+	// 		res.append('Pragma', 'no-cache');
+	//
+	// 		res.json(response);
+	// 	}
+	// });
 
 	// CRUD - Create Read Update Delete
 

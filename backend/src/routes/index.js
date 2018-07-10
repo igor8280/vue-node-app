@@ -2,9 +2,11 @@ import express from 'express';
 import config from '../config';
 import initDb from '../db';
 import middleware from '../middleware';
+
 import languageCtrl from '../controllers/language';
 import countryCtrl from '../controllers/country';
 import userCtrl from '../controllers/user';
+import authCtrl from '../controllers/auth';
 
 let router = express();
 
@@ -18,6 +20,7 @@ initDb(db => {
 	router.use('/languages', languageCtrl({ config, db }));
 	router.use('/countries', countryCtrl({ config, db }));
 	router.use('/users', userCtrl({ config, db }));
+	router.use('/auth', authCtrl({ config, db }));
 });
 
 export default router;

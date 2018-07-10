@@ -7,9 +7,7 @@
         <el-menu :default-active="$route.path"
                  :collapse="isCollapse"
                  @select="selectMenu"
-                 :collapse-transition="false"
-				 background-color="#333333"
-				 text-color="#ffffff">
+                 :collapse-transition="false">
 
             <el-menu-item v-for="(nav, i) in navigation" :index="nav.path || ''" :key="i">
                 <i v-if="nav.icon" :class="nav.icon"></i>

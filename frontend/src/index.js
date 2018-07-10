@@ -6,11 +6,11 @@ import api from './resources';
 import utils from './utilities';
 
 import store from './store';
-import routes from './routes';
+import router from './router';
 
 import ElementUI from 'element-ui';
 import locale from 'element-ui/lib/locale/lang/en';
-// import 'element-ui/lib/theme-chalk/index.css';
+
 import './styles/main.scss';
 
 // Setup Vue
@@ -21,7 +21,9 @@ Vue.use(ElementUI, {
 });
 
 Vue.prototype.$api = api;
-Vue.prototype.$utils = utils;
+Vue.prototype.$utils = function(name, ...args) {
+	return utils[name].call(this, ...args);
+};
 
 // global components
 Vue.component('pagination', require('./components/pagination').default);
@@ -35,46 +37,8 @@ Vue.config.devtools = true;
 
 Vue.http.options.emulateJSON = true;
 
-// Setup router
-const router = new VueRouter({
-	mode: 'history',
-	linkActiveClass: 'active',
-	scrollBehavior(to, from, savedPosition) {
-		if (savedPosition)
-			return savedPosition;
-		else {
-			return {
-				x: 0,
-				y: 0
-			};
-		}
-	},
-	routes: routes
-});
-
-// router.beforeEach((to, from, next) => {
-// 	window.historyFrom = from;
-// 	const auth = router.index.$options.store.state.auth;
-// 	if (to.matched.some(record => record.meta.requiresAuth)) {
-// 		if (!auth.isLoggedIn)
-// 			next('/signin');
-// 		else
-// 			next();
-// 	}
-// 	else
-// 		next();
-// });
-
-// export default router;
 export const eventBus = new Vue();
 
-/* eslint-disable no-new */
-// new Vue({
-// router,
-// store,
-// 	render: h => h(require('./index.vue'))
-// }).$mount('#container');
-//
 new Vue({
 	router,
 	store,

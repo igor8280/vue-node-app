@@ -1,0 +1,9 @@
+.toolbar {
+	display: grid;
+	grid-auto-flow: column;
+	grid-column-gap: 10px;
+
+	> div:last-child {
+		text-align: right;
+	}
+}

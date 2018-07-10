@@ -7,6 +7,7 @@
             <el-container>
                 <el-header class="header">
                     <header-main v-show="header.type === 'main'"/>
+                    <header-edit v-show="header.type === 'edit'"/>
                 </el-header>
                 <el-main class="page">
                     <router-view></router-view>
@@ -26,7 +27,8 @@
 		},
 		components: {
 			navigation: require('./components/navigation').default,
-			headerMain: require('./components/headers/main').default
+			headerMain: require('./components/headers/main').default,
+			headerEdit: require('./components/headers/edit').default
 		}
 	};
 

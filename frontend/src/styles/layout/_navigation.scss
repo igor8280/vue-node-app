@@ -1,5 +1,5 @@
 .menu {
-	background-color: #333333;
+	background-color: $color-menu-item-bg;
 	z-index: 3;
 
 	.icon-collapse {
@@ -8,9 +8,16 @@
 		padding-top: 21px;
 		cursor: pointer;
 		text-align: center;
-		color: #ffffff;
+		color: $color-menu-item-text;
 		font-size: 18px;
-		transition: transform 0.2s ease;
+		transition: background-color 0.2s ease;
+
+		&:hover {
+			background-color: $color-menu-item-bg-hover;
+			& i {
+				color: $color-menu-item-text-hover;
+			}
+		}
 	}
 
 	&__open {

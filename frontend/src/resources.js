@@ -6,8 +6,8 @@ Vue.use(VueResource);
 const prefix = '/proxy';
 
 const resources = {
-	countries: prefix + '/countries',
-	languages: prefix + '/languages'
+	countries: prefix + '/countries/{id}',
+	languages: prefix + '/languages/{id}'
 };
 
 for (let key in resources)

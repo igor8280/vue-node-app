@@ -17,12 +17,23 @@ $font-semi-bold-italic: 'open_sanssemibold_italic';
 
 /**
 *
+*	variables for colors
+*
+ */
+
+$color-menu-item-text: #ababaa;
+$color-menu-item-text-hover: #ffffff;
+$color-menu-item-bg: #262938;
+$color-menu-item-bg-hover: rgba(#ffffff, 0.1);
+
+/**
+*
 *	variables for element-ui
 *
 */
 
 /* theme color */
-$--color-primary: #5daf71;
+$--color-primary: #5eb7c0;
 
 /* icon font path, required */
 $--font-path: '~element-ui/lib/theme-chalk/fonts';

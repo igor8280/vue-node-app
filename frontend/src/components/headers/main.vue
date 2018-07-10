@@ -13,9 +13,6 @@
 			header() {
 				return this.$store.getters.header;
 			}
-		},
-		mounted() {
-			this.$store.commit('setMenuVisibility', true);
 		}
 	};
 </script>

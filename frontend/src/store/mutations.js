@@ -19,5 +19,16 @@ export const saveSession = (state, payload) => {
 };
 
 export const clearSession = state => {
-	state.session = {};
+	state.session = {history: []};
+};
+
+export const saveRoute = (state, route) => {
+	let history = state.session.history;
+	let lastRoute = history[history.length - 1];
+	if (route !== lastRoute)
+		history.push(route);
+};
+
+export const removeRoute = state => {
+	state.session.history.pop();
 };

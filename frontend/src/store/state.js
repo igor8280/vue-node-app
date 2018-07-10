@@ -6,7 +6,9 @@ const STATE = {
 	local: {
 		collapsedMenu: false
 	},
-	session: {},
+	session: {
+		history: []
+	},
 	showMenu: false
 };
 

@@ -1,88 +1,80 @@
 <template>
 	<div>
 		<el-row>
-			<el-col :span="6">
-				<search-box v-model="search" @input="getLanguagesBySearch()" />
-			</el-col>
+			<div class="toolbar">
+				<div>
+					<search-box v-model="search" @input="getLanguagesBySearch()" />
+				</div>
+				<div>
+					<el-button type="primary"
+							   icon="el-icon-plus"
+							   @click="edit('create')">
+						Add new
+					</el-button>
+					<el-button type="danger"
+							   icon="el-icon-delete"
+							   :disabled="selectedLanguages.length !== 1"
+							   @click="deleteLanguage">
+						Delete
+					</el-button>
+				</div>
+			</div>
 		</el-row>
 		<el-row>
-			<el-col>
-				<!--Table-->
-				<el-table v-if="languages.length"
-						  :data="languages"
-						  :default-sort="sort"
-						  @sort-change="newSort => $utils.changeSort(newSort, sort, $refs.language, getLanguages)"
-						  ref="language"
-						  v-loading="gridLoad"
-						  element-loading-text="Loading..."
-						  border
-						  stripe
-						  style="width: 100%">
-					<el-table-column
-						type="selection"
-						width="30">
-					</el-table-column>
-					<el-table-column
-						align="left"
-						prop="name"
-						label="Name"
-						sortable="custom"
-						width="560">
-					</el-table-column>
-					<el-table-column
-						align="center"
-						prop="id"
-						label="ID"
-						sortable="custom"
-						width="50">
-					</el-table-column>
-					<el-table-column
-						align="center"
-						prop="isoCodeOne"
-						label="ISO Code One"
-						sortable="custom"
-						width="140">
-					</el-table-column>
-					<el-table-column
-						align="center"
-						prop="isoCodeTwoB"
-						label="ISO Code Two B"
-						sortable="custom"
-						width="140">
-					</el-table-column>
-					<el-table-column
-						align="center"
-						prop="isoCodeTwoT"
-						label="ISO Code Two T"
-						sortable="custom"
-						width="140">
-					</el-table-column>
-					<el-table-column
-						align="center"
-						width="160"
-						prop="description"
-						label="Description"
-						sortable="custom">
-					</el-table-column>
-					<el-table-column
-						align="center"
-						width="140"
-						prop="shortlisted"
-						label="Short listed"
-						sortable="custom">
-						<template slot-scope="scope">
-							<el-icon v-if="scope.row.shortlisted" name="el-input__icon el-icon-check vms-green"></el-icon>
-							<el-icon v-else name="el-input__icon el-icon-close vms-red"></el-icon>
-						</template>
-					</el-table-column>
-					<el-table-column
-						align="center"
-						prop=""
-						label="">
-					</el-table-column>
-				</el-table>
-				<pagination v-model="pagination" @input="getLanguages"/>
-			</el-col>
+			<!--Table-->
+			<el-table v-if="languages.length"
+					  :data="languages"
+					  :default-sort="sort"
+					  ref="table"
+					  @sort-change="sort => $utils('changeSort', sort, getLanguages)"
+					  @selection-change="selectedLanguages = $utils('rowsIds', $event)"
+					  v-loading="gridLoad"
+					  border
+					  stripe>
+				<el-table-column
+					type="selection"
+					width="30">
+				</el-table-column>
+				<el-table-column
+					align="left"
+					prop="name"
+					label="Name"
+					sortable="custom">
+					<template slot-scope="scope">
+						<el-button type="text" @click="edit(scope.row._id)">
+							{{scope.row.name}}
+						</el-button>
+					</template>
+				</el-table-column>
+				<el-table-column
+					align="center"
+					prop="isoCodeTwoB"
+					label="ISO Code"
+					sortable="custom"
+					width="140">
+				</el-table-column>
+				<el-table-column
+					align="center"
+					prop="description"
+					label="Description"
+					sortable="custom">
+				</el-table-column>
+				<el-table-column
+					align="center"
+					width="140"
+					prop="shortlisted"
+					label="Short listed"
+					sortable="custom">
+					<template slot-scope="scope">
+						<i v-if="scope.row.shortlisted" class="el-icon-check" style="color: green;"></i>
+						<i v-else class="el-icon-close" style="color: red;"></i>
+					</template>
+				</el-table-column>
+			</el-table>
+			<el-alert v-else title="There's no created items." type="warning" :closable="false" />
+		</el-row>
+		<el-row>
+			<pagination v-model="pagination" @input="getLanguages" ref="pagination"/>
 		</el-row>
 	</div>
 </template>
@@ -93,6 +85,7 @@
 		data() {
 			return {
 				languages: [],
+				selectedLanguages: [],
 				pagination: {},
 				sort: {
 					prop: 'name',
@@ -107,14 +100,14 @@
 				type: 'main',
 				title: 'Languages list'
 			});
-			this.$utils.autoLoad(this);
+			this.$utils('autoLoad');
 			this.getLanguages();
 		},
 		methods: {
 			getLanguages() {
 				let params = {
 					...this.pagination,
-					sort: this.$utils.sortToString(this.sort)
+					sort: this.$utils('sortToString')
 				};
 
 				if (this.search)
@@ -129,7 +122,7 @@
 					this.pagination.limit = +data.limit;
 					this.pagination.total = +data.total;
 					this.gridLoad = false;
-					this.$utils.autoSave(this);
+					this.$utils('autoSave');
 				}, (error) => {
 					console.log(error);
 				});
@@ -137,6 +130,18 @@
 			getLanguagesBySearch() {
 				this.pagination.page = 1;
 				this.getLanguages();
+			},
+			edit(id) {
+				this.$store.commit('saveRoute', this.$route.path);
+				this.$router.push('/languages/' + id);
+			},
+			deleteLanguage() {
+				this.$api.languages.delete({id: this.selectedLanguages[0]}).then(() => {
+					this.$utils('notify', {msg: 'Language deleted successfully'});
+					this.$refs.pagination.decreaseTotal(1);
+				}, (error) => {
+					this.$utils('handleError', error);
+				});
 			}
 		}
 	};

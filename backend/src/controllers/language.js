@@ -1,6 +1,6 @@
 // import mongoose from 'mongoose';
 import { Router } from 'express';
-import CountryModel from '../models/countryModel';
+import LanguageModel from '../models/language';
 
 export default ({ config, db }) => {
 	// instance of express router
@@ -8,40 +8,37 @@ export default ({ config, db }) => {
 
 	// CRUD - Create Read Update Delete
 
-	// 'v1/countries/add' - creating endpoint for POST (Create)
+	// 'v1/languages/add' - creating endpoint for POST (Create)
 	api.post('/', (req, res) => {
 		// create data model
-		let countryModel = new CountryModel();
+		let languageModel = new LanguageModel();
 
 		// set data model values from request
 		// required attributes
-		countryModel.name = req.body.name;
-		countryModel.isoCodeTwo = req.body.isoCodeTwo;
-		countryModel.isoCodeThree = req.body.isoCodeThree;
+		languageModel.name = req.body.name;
+		languageModel.isoCodeTwoB = req.body.isoCodeTwoB;
 
 		// optional attributes
+		if (req.body.isoCodeOne)
+			languageModel.isoCodeOne = req.body.isoCodeOne;
+		if (req.body.isoCodeTwoT)
+			languageModel.isoCodeTwoT = req.body.isoCodeTwoT;
 		if (req.body.shortListed)
-			countryModel.shortListed = req.body.shortListed;
+			languageModel.shortListed = req.body.shortListed;
 		if (req.body.description)
-			countryModel.description = req.body.description;
-		if (req.body.taxRate)
-			countryModel.taxRate = req.body.taxRate;
-		if (req.body.currency)
-			countryModel.currency = req.body.currency;
-
-		// custom validation --- BICE INTEGRISANA U SCHEMU
+			languageModel.description = req.body.description;
 
 		// save data to database
-		countryModel.save(err => {
+		languageModel.save(err => {
 			// on error return err object
 			if (err) res.send(err);
 
 			// else return message and inserted data
-			res.json({ 'message': 'Country added successfully!', 'data': countryModel});
+			res.json({ 'message': 'Language added successfully!', 'data': languageModel});
 		});
 	});
 
-	// 'v1/countries' - create endpoint for GET (Read)
+	// 'v1/languages' - create endpoint for GET (Read)
 	api.get('/', (req, res) => {
 		// parse URL query string (for pagination)
 		let page = req.query.page || 1;
@@ -49,27 +46,27 @@ export default ({ config, db }) => {
 		let sort = req.query.sort || {'name': 1};
 
 		// search with aggregation using Regex()
-		let agg = CountryModel.aggregate();
+		let agg = LanguageModel.aggregate();
 		if (req.query.search) {
 			let search = new RegExp(`^${req.query.search}`, 'i');
-			agg.match( {$or :[{name: search}, {isoCodeTwo: search}, {isoCodeThree: search}]});
+			agg.match( {$or :[{name: search}, {isoCodeOne: search}, {isoCodeTwoB: search}, {isoCodeTwoT: search}]});
 		}
 
 		// with AGGREGATE pagination (https://www.npmjs.com/package/mongoose-aggregate-paginate/v/1.1.2)
-		CountryModel.aggregatePaginate(agg, {"page": page, "limit": limit, "sortBy": sort} ,(err, countries, pageCount, itemCount) => {
+		LanguageModel.aggregatePaginate(agg, {"page": page, "limit": limit, "sortBy": sort} ,(err, languages, pageCount, itemCount) => {
 			// on error return err object
 			if (err) res.send(err);
 
 			// return data (plural!!!)
-			let data = {"content": countries, "pages": pageCount, "total": itemCount, "page": page, "limit": limit};
+			let data = {"content": languages, "pages": pageCount, "total": itemCount, "page": page, "limit": limit};
 			res.json(data);
 		});
 	});
 
-	// 'v1/countries/:id' - Read one
+	// 'v1/languages/:id' - Read one
 	api.get('/:id', (req, res) => {
 		if (req.params.id) {
-			CountryModel.findById(req.params.id, (err, country) => {
+			LanguageModel.findById(req.params.id, (err, country) => {
 				// on error return err object
 				if (err) res.send(err);
 
@@ -79,30 +76,29 @@ export default ({ config, db }) => {
 		}
 	});
 
-	// 'v1/countries/:id - PUT (Update)
+	// 'v1/languages/:id - PUT (Update)
 	api.put('/:id', (req, res) => {
 		// create data model
-		let countryModel = {};
+		let languageModel = {};
 
 		// set data model values from request
 		// required attributes
-		countryModel.name = req.body.name;
-		countryModel.isoCodeTwo = req.body.isoCodeTwo;
-		countryModel.isoCodeThree = req.body.isoCodeThree;
+		languageModel.name = req.body.name;
+		languageModel.isoCodeTwoB = req.body.isoCodeTwoB;
 
 		// optional attributes
+		if (req.body.isoCodeOne)
+			languageModel.isoCodeOne = req.body.isoCodeOne;
+		if (req.body.isoCodeTwoT)
+			languageModel.isoCodeTwoT = req.body.isoCodeTwoT;
 		if (req.body.shortListed)
-			countryModel.shortListed = req.body.shortListed;
+			languageModel.shortListed = req.body.shortListed;
 		if (req.body.description)
-			countryModel.description = req.body.description;
-		if (req.body.taxRate)
-			countryModel.taxRate = req.body.taxRate;
-		if (req.body.currency)
-			countryModel.currency = req.body.currency;
+			languageModel.description = req.body.description;
 
 		// check if ID exists and its value
 		if (req.params.id) {
-			CountryModel.findByIdAndUpdate(req.params.id, countryModel, {"new": true}, (err, data) => {
+			LanguageModel.findByIdAndUpdate(req.params.id, languageModel, {"new": true}, (err, data) => {
 				if (err) res.send(err);
 
 				// console.log('res update', data);
@@ -111,10 +107,10 @@ export default ({ config, db }) => {
 		}
 	});
 
-	// '/v1/countries/:id' - DELETE (One)
+	// '/v1/languages/:id' - DELETE (One)
 	api.delete('/:id', (req, res) => {
 		if (req.params.id) {
-			CountryModel.findByIdAndDelete(req.params.id, (err, data) => {
+			LanguageModel.findByIdAndDelete(req.params.id, (err, data) => {
 				// 	// on error return err object
 				if (err) res.send(err);
 

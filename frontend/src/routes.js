@@ -11,6 +11,18 @@ export default [
 		component: require('./views/countries/list').default
 	},
 	{
+		path: '/countries/:id',
+		component: require('./views/countries/edit').default
+	},
+	{
+		path: '/languages',
+		component: require('./views/languages/list').default
+	},
+	{
+		path: '/languages/:id',
+		component: require('./views/languages/edit').default
+	},
+	{
 		path: '/image-cropper',
 		component: require('./views/image-cropper/cropper').default
 	},

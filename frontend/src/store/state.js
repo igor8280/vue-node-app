@@ -3,17 +3,22 @@ import merge from 'lodash/merge';
 export const STORAGE_KEY = 'vms';
 
 const STATE = {
-	showMenu: false,
-	collapsedMenu: false
+	local: {
+		collapsedMenu: false
+	},
+	session: {
+		history: []
+	},
+	showMenu: false
 };
 
-let storage = localStorage.getItem(STORAGE_KEY);
-let oldState = storage ? JSON.parse(storage) : {};
+let localState = localStorage.getItem(STORAGE_KEY);
+localState = localState ? JSON.parse(localState) : {};
 
-// delete keys that are not part of this state
-for (let key in oldState) {
-	if (!STATE.hasOwnProperty(key))
-		delete oldState[key];
-}
+let sessionState = sessionStorage.getItem(STORAGE_KEY);
+sessionState = sessionState ? JSON.parse(sessionState) : {};
 
-export default merge({}, STATE, oldState);
+merge(STATE.local, localState);
+merge(STATE.session, sessionState);
+
+export default STATE;

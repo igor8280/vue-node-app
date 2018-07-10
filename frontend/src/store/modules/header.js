@@ -1,6 +1,11 @@
-const state = {
+const defaultState = {
 	type: '',
-	title: ''
+	title: '',
+	goBack: null,
+	save: null
+};
+const state = {
+	...defaultState
 };
 
 const getters = {
@@ -8,19 +13,23 @@ const getters = {
 };
 
 const mutations = {
-	setType: (state, value) => {
-		state.type = value;
-	},
-	setTitle: (state, value) => {
-		state.title = value;
+	setHeader: (state, value) => {
+		for (let key in defaultState) {
+			if (value.hasOwnProperty(key))
+				state[key] = value[key];
+			else
+				state[key] = defaultState[key];
+		}
 	}
 };
 
+// array of headers where menu should be visible
+let showMenuIn = ['main'];
+
 const actions = {
 	setHeader: (context, value) => {
-		console.log(context);
-		context.commit('setTitle', value.title);
-		context.commit('setType', value.type);
+		context.commit('setHeader', value);
+		context.commit('setMenuVisibility', showMenuIn.includes(value.type));
 	}
 };
 

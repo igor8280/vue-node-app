@@ -1,14 +1,15 @@
 <template>
     <div id="app">
         <el-container>
-            <el-aside width="auto">
+            <el-aside class="menu" width="auto">
                 <navigation v-show="$store.getters.showMenu"></navigation>
             </el-aside>
             <el-container>
-                <el-header style="padding: 0px;">
+                <el-header class="header">
                     <header-main v-show="header.type === 'main'"/>
+                    <header-edit v-show="header.type === 'edit'"/>
                 </el-header>
-                <el-main style="padding: 0px;">
+                <el-main class="page">
                     <router-view></router-view>
                 </el-main>
             </el-container>
@@ -26,14 +27,9 @@
 		},
 		components: {
 			navigation: require('./components/navigation').default,
-			headerMain: require('./components/headers/main').default
+			headerMain: require('./components/headers/main').default,
+			headerEdit: require('./components/headers/edit').default
 		}
 	};
 
 </script>
-
-<style>
-    body {
-        margin: 0px;
-    }
-</style>

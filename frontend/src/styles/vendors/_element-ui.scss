@@ -1,0 +1,93 @@
+@import "../../../node_modules/element-ui/packages/theme-chalk/src/index";
+
+/*
+*
+*	extending / fixing element-ui theme
+*
+*/
+
+.el-row {
+	margin-bottom: 10px;
+}
+
+.el-button {
+	font-weight: bold;
+	text-transform: uppercase;
+
+	i {
+		font-weight: bold;
+	}
+}
+
+.el-menu {
+	font-family: $font-bold;
+	background-color: $color-menu-item-bg;
+	border-right: none;
+
+	.el-menu-item {
+		color: $color-menu-item-text;
+
+		&:hover {
+			background-color: $color-menu-item-bg-hover;
+			color: $color-menu-item-text-hover;
+
+			& i {
+				color: $color-menu-item-text-hover;
+			}
+		}
+
+		&.is-active {
+			background-color: $--color-primary;
+			color: $color-menu-item-text-hover;
+		}
+	}
+}
+
+.el-table {
+	.cell {
+		padding-left: 3px;
+		padding-right: 0px;
+
+		> * {
+			white-space: normal;
+		}
+	}
+
+	.el-table-column--selection > .cell {
+		padding: 0px !important;
+		text-align: center;
+
+		> .el-checkbox > .el-checkbox__input {
+			vertical-align: bottom;
+		}
+	}
+
+	.el-table__header > thead > tr > th {
+		padding: 0px;
+
+		.cell {
+			text-transform: uppercase;
+			color: $--color-primary;
+		}
+	}
+
+	.el-table__row {
+		td {
+			padding: 0px;
+
+			.el-button {
+				padding: 0px;
+			}
+		}
+	}
+}
+
+.el-form {
+	.el-form-item {
+		padding: 0 10px;
+	}
+	.el-form-item__label {
+		line-height: 20px;
+		padding-bottom: 0px;
+	}
+}

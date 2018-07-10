@@ -1,0 +1,43 @@
+.header {
+	padding: 0px;
+	line-height: 6rem;
+	z-index: 2;
+
+	h1 {
+		margin: 0px;
+	}
+
+	&__main {
+		background: $color-menu-item-bg; //linear-gradient(to right, $color-menu-item-bg 0%, rgba($color-menu-item-bg, 0.75) 100%);
+		color: #FFFFFF;
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+
+	&__edit {
+		background-color: $--color-primary;
+		color: white;
+		padding: 0 2rem;
+
+		.return {
+			float: left;
+
+			> i {
+				line-height: 6rem;
+				font-size: 2rem;
+				font-weight: bold;
+				cursor: pointer;
+			}
+		}
+
+		.title {
+			padding-left: 1rem;
+			float: left;
+		}
+
+		.actions {
+			text-align: right;
+		}
+	}
+
+}

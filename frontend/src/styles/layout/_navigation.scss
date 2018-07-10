@@ -1,0 +1,36 @@
+.menu {
+	background-color: $color-menu-item-bg;
+	z-index: 3;
+
+	.icon-collapse {
+		width: 100%;
+		height: 60px;
+		padding-top: 21px;
+		cursor: pointer;
+		text-align: center;
+		color: $color-menu-item-text;
+		font-size: 18px;
+		transition: background-color 0.2s ease;
+
+		&:hover {
+			background-color: $color-menu-item-bg-hover;
+			& i {
+				color: $color-menu-item-text-hover;
+			}
+		}
+	}
+
+	&__open {
+		width: 300px;
+		transition: width 0.2s ease;
+	}
+
+	&__close {
+		width: 64px;
+		transition: width 0.2s ease;
+
+		& > .icon-collapse {
+			transform: scaleX(-1);
+		}
+	}
+}

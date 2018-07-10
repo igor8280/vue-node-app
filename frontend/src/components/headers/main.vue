@@ -1,5 +1,5 @@
 <template>
-    <div class="header">
+    <div class="header__main">
         <div>
             <h1>{{header.title}}</h1>
         </div>
@@ -13,25 +13,6 @@
 			header() {
 				return this.$store.getters.header;
 			}
-		},
-		mounted() {
-			this.$store.commit('setMenuVisibility', true);
 		}
 	};
 </script>
-
-
-<style scoped lang="scss">
-    @import '../../styles/element-variables.scss';
-
-    .header {
-        padding: 0 10px;
-        line-height: 60px;
-        background-color: $--color-primary;
-        color: white;
-
-        h1 {
-            margin: 0px;
-        }
-    }
-</style>

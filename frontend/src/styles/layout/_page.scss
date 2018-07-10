@@ -1,0 +1,13 @@
+#app {
+	min-height: 100vh;
+	position: relative;
+
+	& > .el-container {
+		height: 100vh;
+	}
+}
+
+.page {
+	padding: 10px;
+	z-index: 1;
+}

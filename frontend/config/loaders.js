@@ -27,7 +27,8 @@ const loaders = {
 			use: [
 				'css-hot-loader',
 				MiniCssExtractPlugin.loader,
-				'css-loader'
+				'css-loader',
+				'resolve-url-loader'
 			]
 		},
 		{
@@ -60,7 +61,8 @@ const loaders = {
 			use: [
 				MiniCssExtractPlugin.loader,
 				'css-loader',
-				'sass-loader'
+				'resolve-url-loader',
+				'sass-loader?sourceMap'
 			]
 		},
 		{

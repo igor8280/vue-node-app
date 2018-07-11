@@ -1,5 +1,5 @@
-var fs = require('fs');
-var mv = require('mv');
+// var fs = require('fs');
+// var mv = require('mv');
 var path = require('path'); // https://nodejs.org/api/path.html
 var watch = require('node-watch'); // https://www.npmjs.com/package/node-watch
 

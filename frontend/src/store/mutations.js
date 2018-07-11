@@ -1,3 +1,11 @@
+export const updateAuth = (state, value) => {
+	state.local.auth = value;
+};
+
+export const updateUser = (state, value) => {
+	state.local.user = value;
+};
+
 export const showMenu = (state, value) => {
 	state.showMenu = value;
 };

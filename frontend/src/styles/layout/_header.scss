@@ -12,6 +12,11 @@
 		color: #FFFFFF;
 		padding-left: 1rem;
 		padding-right: 1rem;
+		display: flex;
+
+		.title {
+			flex-grow: 1;
+		}
 	}
 
 	&__edit {

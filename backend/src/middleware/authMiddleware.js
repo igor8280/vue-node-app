@@ -2,8 +2,8 @@ import jwt from 'jsonwebtoken';
 import bcrypt from "bcryptjs";
 import config from "../config";
 
-const ACCESS_TOKEN_TIME = 60*10; // 10 min
-const REFRESH_TOKEN_TIME = 60*60*24*180; // 180 days
+const ACCESS_TOKEN_TIME = 60 * 10; // 10 min
+const REFRESH_TOKEN_TIME = 60 * 60 * 24 * 180; // 180 days
 
 let generateAccessToken = (req, res, next) => {
 	// console.log('4 generateAccessToken');
@@ -33,12 +33,16 @@ let refreshAccessToken = (req, res, next, refresh_token) => {
 	// validate refresh token
 	return jwt.verify(refresh_token, config.salt.access_token, (err, decoded) => {
 		// if token is invalid or expired
+		// if (err)
+		// 	return err;
 		if (err)
-			return err;
-		// return res.status(401).send('Refresh token expired!');
+			return res.status(401).send({
+				error: 'expired_token',
+				error_description: 'Refresh token expired!'
+			});
 
 		// create NEW access token
-		let access_token = jwt.sign({ username: decoded.username, _id: decoded._id}, config.salt.access_token, { expiresIn: 60 * 10 });
+		let access_token = jwt.sign({ username: decoded.username, _id: decoded._id}, config.salt.access_token, { expiresIn: ACCESS_TOKEN_TIME });
 		// decoded token (for expiration time only)
 		let decode = jwt.decode(access_token);
 

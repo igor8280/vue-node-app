@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
 
+import Auth from './services/auth';
 import api from './resources';
 import utils from './utilities';
 
@@ -16,6 +17,7 @@ import './styles/main.scss';
 // Setup Vue
 Vue.use(VueRouter);
 Vue.use(VueResource);
+Vue.use(Auth);
 Vue.use(ElementUI, {
 	locale
 });

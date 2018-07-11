@@ -2,9 +2,13 @@ export default [
 	{
 		path: '/',
 		component: require('./views/dashboard').default
-		// meta: {
-		// 	requiresAuth: true
-		// }
+	},
+	{
+		path: '/signin',
+		component: require('./views/signin').default,
+		meta: {
+			requiresAuth: false
+		}
 	},
 	{
 		path: '/countries',

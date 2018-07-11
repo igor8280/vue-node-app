@@ -5,3 +5,4 @@ frontend/dist
 backend/config/config.index.js
 .idea/
 .directory
+backend/playground

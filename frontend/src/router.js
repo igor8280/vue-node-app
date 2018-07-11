@@ -1,5 +1,6 @@
 import VueRouter from 'vue-router';
 import routes from './routes';
+import store from './store';
 
 // Setup router
 const router = new VueRouter({
@@ -18,17 +19,16 @@ const router = new VueRouter({
 	routes
 });
 
-// router.beforeEach((to, from, next) => {
-// 	window.historyFrom = from;
-// 	const auth = router.index.$options.store.state.auth;
-// 	if (to.matched.some(record => record.meta.requiresAuth)) {
-// 		if (!auth.isLoggedIn)
-// 			next('/signin');
-// 		else
-// 			next();
-// 	}
-// 	else
-// 		next();
-// });
+router.beforeEach((to, from, next) => {
+	const auth = store.state.local.auth;
+	if (to.meta.requiresAuth !== false) {
+		if (!auth.isLoggedIn)
+			next('/signin');
+		else
+			next();
+	}
+	else
+		next();
+});
 
 export default router;

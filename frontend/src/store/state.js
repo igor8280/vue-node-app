@@ -4,6 +4,12 @@ export const STORAGE_KEY = 'vms';
 
 const STATE = {
 	local: {
+		auth: {
+			isLoggedIn: false,
+			accessToken: '',
+			refreshToken: ''
+		},
+		user: {},
 		collapsedMenu: false
 	},
 	session: {

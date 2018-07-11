@@ -28,7 +28,7 @@
 					<!-- second level -->
 					<template v-for="(sub, i2) in nav.subItems">
 						<!-- second level navigation without sub items-->
-						<el-menu-item v-if="!sub.subItems" :index="sub.path || ''" :key="i">
+						<el-menu-item v-if="!sub.subItems" :index="sub.path || ''" :key="'sub-' + i2">
 							<i v-if="sub.icon" :class="sub.icon"></i>
 							<span slot="title">{{sub.label}}</span>
 						</el-menu-item>
@@ -41,9 +41,9 @@
 							</template>
 
 							<!-- third level -->
-							<template v-for="subSub in sub.subItems">
+							<template v-for="(subSub, i3) in sub.subItems">
 								<!-- third level navigation without sub items-->
-								<el-menu-item v-if="!subSub.subItems" :index="subSub.path || ''" :key="i">
+								<el-menu-item v-if="!subSub.subItems" :index="subSub.path || ''" :key="'subSub-' + i3">
 									<i v-if="subSub.icon" :class="subSub.icon"></i>
 									<span slot="title">{{subSub.label}}</span>
 								</el-menu-item>
@@ -97,7 +97,7 @@
 							},
 							{
 								label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-								path: '/test/3'
+								path: '/test-lorem'
 							},
 							{
 								label: 'test 1.2',
@@ -116,7 +116,8 @@
 										path: '/test/1.2.3'
 									},
 									{
-										label: 'Praesent lacinia erat vel ligula elementum condimentum'
+										label: 'Praesent lacinia erat vel ligula elementum condimentum',
+										path: '/test/1.2.4'
 									}
 								]
 							},

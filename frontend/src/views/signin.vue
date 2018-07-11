@@ -34,8 +34,8 @@
 					password: ''
 				},
 				rules: {
-					username: [{required: true}],
-					password: [{required: true}]
+					username: [{required: true, trigger: 'blur'}],
+					password: [{required: true, trigger: 'blur'}]
 				}
 			};
 		},

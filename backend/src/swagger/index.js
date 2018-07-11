@@ -41,6 +41,19 @@ export default {
 	'produces': [
 		'application/json'
 	],
+	securityDefinitions: {
+		api_key: {
+			type: 'apiKey',
+			name: 'Authorization',
+			in: 'header',
+			value: 'test'
+		}
+	},
+	security: [
+		{
+			api_key: []
+		}
+	],
 	tags,
 	paths,
 	definitions

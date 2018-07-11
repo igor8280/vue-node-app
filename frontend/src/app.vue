@@ -5,7 +5,7 @@
                 <navigation v-show="$store.getters.showMenu"></navigation>
             </el-aside>
             <el-container>
-                <el-header class="header">
+                <el-header class="header" v-show="header.type">
                     <header-main v-show="header.type === 'main'"/>
                     <header-edit v-show="header.type === 'edit'"/>
                 </el-header>

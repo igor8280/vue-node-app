@@ -6,6 +6,7 @@
             <div>
                 <h1>Welcome to Test</h1>
                 <el-button @click="toggleMenu()">toggle</el-button>
+                <el-button @click="changeToken">change token</el-button>
             </div>
         </section>
         <!--End Page Body-->
@@ -27,6 +28,11 @@
 		methods: {
 			toggleMenu() {
 				this.$store.commit('setMenuVisibility', !this.$store.getters.showMenu);
+			},
+			changeToken() {
+				let auth = Object.assign({}, this.$store.getters.local.auth);
+				auth.accessToken = 'test';
+				this.$store.commit('updateAuth', auth);
 			}
 		}
 	};

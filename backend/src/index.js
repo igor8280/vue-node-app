@@ -1,9 +1,11 @@
 import http from 'http';
 import express from 'express';
 import bodyParser from 'body-parser';
+
+import { authenticate } from './middleware/authMiddleware';
+
 import swaggerUI from 'swagger-ui-express';
 import swaggerDocument from './swagger';
-// import mongoose from 'mongoose';
 
 import config from './config';
 import routes from './routes';
@@ -19,11 +21,20 @@ app.use(bodyParser.json({
 // swagger
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument, {
 	swaggerOptions: {
-		docExpansion : "none"
+		docExpansion : "none",
+		onComplete() {
+			this.ui.preauthorizeApiKey('api_key', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNTMxMzE2MTM1LCJleHAiOjE1NjI4NTIxMzV9.W4neYRfcNN1xQLHByT9EfGtIGpBAvfs1YvkigWLPArk');
+		}
 	}
 }));
 
-// passport config
+// auth middleware
+app.use((req, res, next) => {
+	if (req.originalUrl === '/v1/auth/login')
+		next();
+	else
+		authenticate(req, res, next);
+});
 
 // api routes v1
 app.use('/v1', routes);

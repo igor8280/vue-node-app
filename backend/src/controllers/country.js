@@ -1,6 +1,5 @@
-// import mongoose from 'mongoose';
 import { Router } from 'express';
-import CountryModel from '../models/countryModel';
+import CountryModel from '../models/country';
 
 export default ({ config, db }) => {
 	// instance of express router
@@ -8,7 +7,7 @@ export default ({ config, db }) => {
 
 	// CRUD - Create Read Update Delete
 
-	// 'v1/countries/add' - creating endpoint for POST (Create)
+	// 'v1/countries/' - creating endpoint for POST (Create)
 	api.post('/', (req, res) => {
 		// create data model
 		let countryModel = new CountryModel();

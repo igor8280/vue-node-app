@@ -27,11 +27,15 @@
   "author": "Igor Gojkovic <igor.gojkovic@team4js.com>, Milos Markovic <milos.markovic@team4js.com>, Andrija Gojkovic <andrija.gojkovic@team4js.com>",
   "license": "MIT",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "jsonwebtoken": "^8.3.0",
+    "lodash": "^4.17.10",
     "mongoose": "^5.1.6",
     "mongoose-aggregate-paginate": "^1.1.2",
-    "swagger-ui-express": "^3.0.10"
+    "swagger-ui-express": "^3.0.10",
+    "validator": "^10.4.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

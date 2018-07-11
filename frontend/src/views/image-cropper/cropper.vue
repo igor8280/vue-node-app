@@ -2,8 +2,10 @@
     <div>
         <el-row>
             <el-col>
-                <el-button type="primary" @click="chooseImage">Choose Image</el-button>
-                <input id="upload" type="file" accept="image/*" @change="openImage" hidden/>
+				<el-row>
+					<el-button type="primary" @click="chooseImage">Choose Image</el-button>
+					<input id="upload" type="file" accept="image/*" @change="openImage" hidden/>
+				</el-row>
                 <el-row v-show="cropper">
                     <el-col :span="2">
                         <p>Aspect Ratio</p>

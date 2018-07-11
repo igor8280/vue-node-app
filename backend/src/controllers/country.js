@@ -1,6 +1,4 @@
-// import mongoose from 'mongoose';
 import { Router } from 'express';
-import { authenticate } from '../middleware/authMiddleware';
 import CountryModel from '../models/country';
 
 export default ({ config, db }) => {
@@ -9,8 +7,8 @@ export default ({ config, db }) => {
 
 	// CRUD - Create Read Update Delete
 
-	// 'v1/countries/add' - creating endpoint for POST (Create)
-	api.post('/', authenticate, (req, res) => {
+	// 'v1/countries/' - creating endpoint for POST (Create)
+	api.post('/', (req, res) => {
 		// create data model
 		let countryModel = new CountryModel();
 
@@ -43,7 +41,7 @@ export default ({ config, db }) => {
 	});
 
 	// 'v1/countries' - create endpoint for GET (Read)
-	api.get('/', authenticate, (req, res) => {
+	api.get('/', (req, res) => {
 		// parse URL query string (for pagination)
 		let page = req.query.page || 1;
 		let limit = req.query.limit || 10;

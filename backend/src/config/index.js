@@ -1,6 +1,6 @@
 const config = {
 	"port": 3006,
-	"mongoUrl": "mongodb://localhost:27017/proto-meta",
+	"mongoUrl": "mongodb://localhost:27017/testDB",
 	"bodyLimit": "100kb",
 	"salt": {
 		"access_token": "sa-dFf?GfGdsa=4cJKvdFsa",

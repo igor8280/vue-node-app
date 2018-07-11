@@ -6,10 +6,8 @@ const ACCESS_TOKEN_TIME = 60 * 10; // 10 min
 const REFRESH_TOKEN_TIME = 60 * 60 * 24 * 180; // 180 days
 
 let generateAccessToken = (req, res, next) => {
-	// console.log('4 generateAccessToken');
 	// !!! access token should be short-time living (10-15min)
 	let access_token = jwt.sign({ username: req.body.username, _id: req.body._id}, config.salt.access_token, { expiresIn: ACCESS_TOKEN_TIME });
-	// console.log('access token', access_token);
 	// !!! refresh token should be long-time living (1-3 month)
 	let refresh_token = jwt.sign({ username: req.body.username, _id: req.body._id}, config.salt.access_token, { expiresIn: REFRESH_TOKEN_TIME });
 
@@ -23,18 +21,13 @@ let generateAccessToken = (req, res, next) => {
 		'token_type': 'bearer',
 		'expires_in': decode.exp - decode.iat
 	};
-	// console.log('5 response', token);
+
 	respond(res, token);
-	// return response;
-	// next(response);
 };
 
 let refreshAccessToken = (req, res, next, refresh_token) => {
 	// validate refresh token
 	return jwt.verify(refresh_token, config.salt.access_token, (err, decoded) => {
-		// if token is invalid or expired
-		// if (err)
-		// 	return err;
 		if (err)
 			return res.status(401).send({
 				error: 'expired_token',
@@ -54,10 +47,10 @@ let refreshAccessToken = (req, res, next, refresh_token) => {
 		};
 
 		respond(res, token);
-		// return response;
 	});
 };
 
+// create response headers for token (can be a middleware???)
 let respond = (res, token) => {
 	res.append('Cache-Control', 'no-store');
 	res.append('Pragma', 'no-cache');
@@ -65,8 +58,8 @@ let respond = (res, token) => {
 	res.json(token);
 };
 
+// comparing passwords with bcrypt - ASYNC
 let comparePassword = (password, hash_password) => {
-	// console.log('3 bcrypt', password);
 	return bcrypt.compare(password, hash_password);
 };
 
@@ -92,7 +85,6 @@ let authenticate = (req, res, next) => {
 		}
 	} else {
 		res.status(401).send('No Authorization header!');
-		// next();
 	}
 };
 

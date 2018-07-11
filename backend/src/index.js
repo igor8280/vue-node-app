@@ -1,10 +1,11 @@
 import http from 'http';
 import express from 'express';
 import bodyParser from 'body-parser';
+
+import { authenticate } from './middleware/authMiddleware';
+
 import swaggerUI from 'swagger-ui-express';
 import swaggerDocument from './swagger';
-import jwt from 'jsonwebtoken';
-// import mongoose from 'mongoose';
 
 import config from './config';
 import routes from './routes';
@@ -28,32 +29,12 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument, {
 }));
 
 // auth middleware
-// app.use((req, res, next) => {
-// 	if (req.headers.authorization) {
-// 		let access_token = req.headers.authorization.split(' ')[1];
-//
-// 		try {
-// 			jwt.verify(access_token, config.salt.access_token);
-// 			next();
-// 		} catch (e) {
-// 			let custom = {
-// 				'error': 'invalid_token',
-// 				'error_description': 'Access token expired:' + access_token
-// 			};
-// 			let error = 'error ' + custom.error + ' error_description ' + custom.error_description;
-//
-// 			res.append('WWW-Authenticate', error);
-// 			res.append('Cache-Control', 'no-store');
-// 			res.append('Pragma', 'no-cache');
-// 			res.status(401).send(custom);
-// 		}
-// 	} else {
-// 		res.send('No Authorization header!');
-// 		// next();
-// 	}
-// });
-
-// passport config
+app.use((req, res, next) => {
+	if (req.originalUrl === '/v1/auth/login')
+		next();
+	else
+		authenticate(req, res, next);
+});
 
 // api routes v1
 app.use('/v1', routes);

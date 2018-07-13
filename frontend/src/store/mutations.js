@@ -40,3 +40,7 @@ export const saveRoute = (state, route) => {
 export const removeRoute = state => {
 	state.session.history.pop();
 };
+
+export const setHistory = (state, value) => {
+	state.session.history = value;
+};

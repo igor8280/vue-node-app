@@ -85,7 +85,7 @@ const authenticate = (req, res, next) => {
 			res.status(401).send(custom);
 		}
 	} else {
-		let error: {
+		let error = {
 			'error': 'Not authorized!',
 			'message': 'No Authorization header!'
 		};

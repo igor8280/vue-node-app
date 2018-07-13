@@ -124,7 +124,7 @@
 					this.gridLoad = false;
 					this.$utils('autoSave');
 				}, (error) => {
-					console.log(error);
+					this.$utils('handleError', error);
 				});
 			},
 			getLanguagesBySearch() {
@@ -137,7 +137,7 @@
 			},
 			deleteLanguage() {
 				this.$api.languages.delete({id: this.selectedLanguages[0]}).then(() => {
-					this.$utils('notify', {msg: 'Language deleted successfully'});
+					this.$utils('showMessage', {message: 'Language deleted successfully'});
 					this.$refs.pagination.decreaseTotal(1);
 				}, (error) => {
 					this.$utils('handleError', error);

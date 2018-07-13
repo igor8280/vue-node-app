@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import LanguageModel from '../models/language';
+import LanguageModel, {LanguageModelSchema} from '../models/language';
+import response from '../utils/response';
 
 export default ({ config, db }) => {
 	// instance of express router
@@ -13,27 +14,18 @@ export default ({ config, db }) => {
 		let languageModel = new LanguageModel();
 
 		// set data model values from request
-		// required attributes
-		languageModel.name = req.body.name;
-		languageModel.isoCodeTwoB = req.body.isoCodeTwoB;
-
-		// optional attributes
-		if (req.body.isoCodeOne)
-			languageModel.isoCodeOne = req.body.isoCodeOne;
-		if (req.body.isoCodeTwoT)
-			languageModel.isoCodeTwoT = req.body.isoCodeTwoT;
-		if (req.body.shortListed)
-			languageModel.shortListed = req.body.shortListed;
-		if (req.body.description)
-			languageModel.description = req.body.description;
+		LanguageModelSchema.eachPath(path => {
+			if (req.body.hasOwnProperty(path))
+				languageModel[path] = req.body[path];
+		});
 
 		// save data to database
 		languageModel.save(err => {
 			// on error return err object
-			if (err) res.send(err);
+			if (err) return response.sendError(err, res);
 
 			// else return message and inserted data
-			res.json({ 'message': 'Language added successfully!', 'data': languageModel});
+			response.success.post(languageModel, res);
 		});
 	});
 
@@ -42,7 +34,7 @@ export default ({ config, db }) => {
 		// parse URL query string (for pagination)
 		let page = req.query.page || 1;
 		let limit = req.query.limit || 10;
-		let sort = req.query.sort || {'name': 1};
+		let sortBy = req.query.sort || {'name': 1};
 
 		// search with aggregation using Regex()
 		let agg = LanguageModel.aggregate();
@@ -52,27 +44,28 @@ export default ({ config, db }) => {
 		}
 
 		// with AGGREGATE pagination (https://www.npmjs.com/package/mongoose-aggregate-paginate/v/1.1.2)
-		LanguageModel.aggregatePaginate(agg, {"page": page, "limit": limit, "sortBy": sort} ,(err, languages, pageCount, itemCount) => {
+		LanguageModel.aggregatePaginate(agg, {page, limit, sortBy} ,(err, content, pages, total) => {
 			// on error return err object
-			if (err) res.send(err);
+			if (err) return response.sendError(err, res);
 
 			// return data (plural!!!)
-			let data = {"content": languages, "pages": pageCount, "total": itemCount, "page": page, "limit": limit};
+			let data = {content, pages, total, page, limit};
 			res.json(data);
 		});
 	});
 
 	// 'v1/languages/:id' - Read one
 	api.get('/:id', (req, res) => {
-		if (req.params.id) {
-			LanguageModel.findById(req.params.id, (err, country) => {
-				// on error return err object
-				if (err) res.send(err);
+		LanguageModel.findById(req.params.id, (err, language) => {
+			// on error return err object
+			if (err) return response.sendError(err, res);
 
-				// return ONE document
-				res.json(country);
-			});
-		}
+			// language not found
+			if (!language) return response.error.NotFound(res);
+
+			// return ONE document
+			res.json(language);
+		});
 	});
 
 	// 'v1/languages/:id - PUT (Update)
@@ -81,42 +74,38 @@ export default ({ config, db }) => {
 		let languageModel = {};
 
 		// set data model values from request
-		// required attributes
-		languageModel.name = req.body.name;
-		languageModel.isoCodeTwoB = req.body.isoCodeTwoB;
+		LanguageModelSchema.eachPath(path => {
+			if (LanguageModelSchema.paths[path].required || req.body.hasOwnProperty(path))
+				languageModel[path] = req.body[path];
+		});
 
-		// optional attributes
-		if (req.body.isoCodeOne)
-			languageModel.isoCodeOne = req.body.isoCodeOne;
-		if (req.body.isoCodeTwoT)
-			languageModel.isoCodeTwoT = req.body.isoCodeTwoT;
-		if (req.body.shortListed)
-			languageModel.shortListed = req.body.shortListed;
-		if (req.body.description)
-			languageModel.description = req.body.description;
+		let options = {
+			"new": true,
+			runValidators: true
+		};
+		LanguageModel.findByIdAndUpdate(req.params.id, languageModel, options, (err, data) => {
+			// on error return err object
+			if (err) return response.sendError(err, res);
 
-		// check if ID exists and its value
-		if (req.params.id) {
-			LanguageModel.findByIdAndUpdate(req.params.id, languageModel, {"new": true}, (err, data) => {
-				if (err) res.send(err);
+			// language not found
+			if (!data) return response.error.NotFound(res);
 
-				// console.log('res update', data);
-				res.json({message: "Update successful", "data": data});
-			});
-		}
+			response.success.put(data, res);
+		});
 	});
 
 	// '/v1/languages/:id' - DELETE (One)
 	api.delete('/:id', (req, res) => {
-		if (req.params.id) {
-			LanguageModel.findByIdAndDelete(req.params.id, (err, data) => {
-				// 	// on error return err object
-				if (err) res.send(err);
+		LanguageModel.findByIdAndDelete(req.params.id, (err, data) => {
+			// on error return err object
+			if (err) return response.sendError(err, res);
 
-				// else return message
-				res.json({message: "Document deleted successfully", "data": data});
-			});
-		}
+			// language not found
+			if (!data) return response.error.NotFound(res);
+
+			// else return message
+			response.success.delete(data, res);
+		});
 	});
 
 	// return api

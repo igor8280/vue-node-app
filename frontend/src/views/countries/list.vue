@@ -158,7 +158,7 @@
 			},
 			deleteCountry() {
 				this.$api.countries.delete({id: this.selectedCountries[0]}).then(() => {
-					this.$utils('notify', {msg: 'Country deleted successfully'});
+					this.$utils('showMessage', {message: 'Country deleted successfully'});
 					this.$refs.pagination.decreaseTotal(1);
 				}, (error) => {
 					this.$utils('handleError', error);

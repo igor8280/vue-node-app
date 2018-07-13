@@ -100,7 +100,9 @@ export default {
 			Message(options);
 			return response;
 		}).catch((errorResponse) => {
-			return errorResponse;
+			return new Promise((resolve, reject) => {
+				return reject(errorResponse);
+			});
 		});
 	},
 

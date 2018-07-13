@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import CountryModel from '../models/country';
+import CountryModel, {CountryModelSchema} from '../models/country';
+import response from '../utils/response';
 
 export default ({ config, db }) => {
 	// instance of express router
@@ -13,30 +14,18 @@ export default ({ config, db }) => {
 		let countryModel = new CountryModel();
 
 		// set data model values from request
-		// required attributes
-		countryModel.name = req.body.name;
-		countryModel.isoCodeTwo = req.body.isoCodeTwo;
-		countryModel.isoCodeThree = req.body.isoCodeThree;
-
-		// optional attributes
-		if (req.body.shortListed)
-			countryModel.shortListed = req.body.shortListed;
-		if (req.body.description)
-			countryModel.description = req.body.description;
-		if (req.body.taxRate)
-			countryModel.taxRate = req.body.taxRate;
-		if (req.body.currency)
-			countryModel.currency = req.body.currency;
-
-		// custom validation --- BICE INTEGRISANA U SCHEMU
+		CountryModelSchema.eachPath(path => {
+			if (req.body.hasOwnProperty(path))
+				countryModel[path] = req.body[path];
+		});
 
 		// save data to database
 		countryModel.save(err => {
 			// on error return err object
-			if (err) res.send(err);
+			if (err) return response.sendError(err, res);
 
 			// else return message and inserted data
-			res.json({ 'message': 'Country added successfully!', 'data': countryModel});
+			response.success.post(countryModel, res);
 		});
 	});
 
@@ -45,7 +34,7 @@ export default ({ config, db }) => {
 		// parse URL query string (for pagination)
 		let page = req.query.page || 1;
 		let limit = req.query.limit || 10;
-		let sort = req.query.sort || {'name': 1};
+		let sortBy = req.query.sort || {'name': 1};
 
 		// search with aggregation using Regex()
 		let agg = CountryModel.aggregate();
@@ -55,27 +44,27 @@ export default ({ config, db }) => {
 		}
 
 		// with AGGREGATE pagination (https://www.npmjs.com/package/mongoose-aggregate-paginate/v/1.1.2)
-		CountryModel.aggregatePaginate(agg, {"page": page, "limit": limit, "sortBy": sort} ,(err, countries, pageCount, itemCount) => {
+		CountryModel.aggregatePaginate(agg, {page, limit, sortBy} ,(err, content, pages, total) => {
 			// on error return err object
-			if (err) res.send(err);
+			if (err) return response.sendError(err, res);
 
 			// return data (plural!!!)
-			let data = {"content": countries, "pages": pageCount, "total": itemCount, "page": page, "limit": limit};
-			res.json(data);
+			res.json({content, pages, total, page, limit});
 		});
 	});
 
 	// 'v1/countries/:id' - Read one
 	api.get('/:id', (req, res) => {
-		if (req.params.id) {
-			CountryModel.findById(req.params.id, (err, country) => {
-				// on error return err object
-				if (err) res.send(err);
+		CountryModel.findById(req.params.id, (err, country) => {
+			// on error return err object
+			if (err) return response.sendError(err, res);
 
-				// return ONE document
-				res.json(country);
-			});
-		}
+			// country not found
+			if (!country) return response.error.NotFound(res);
+
+			// return ONE document
+			res.json(country);
+		});
 	});
 
 	// 'v1/countries/:id - PUT (Update)
@@ -84,43 +73,38 @@ export default ({ config, db }) => {
 		let countryModel = {};
 
 		// set data model values from request
-		// required attributes
-		countryModel.name = req.body.name;
-		countryModel.isoCodeTwo = req.body.isoCodeTwo;
-		countryModel.isoCodeThree = req.body.isoCodeThree;
+		CountryModelSchema.eachPath(path => {
+			if (CountryModelSchema.paths[path].required || req.body.hasOwnProperty(path))
+				countryModel[path] = req.body[path];
+		});
 
-		// optional attributes
-		if (req.body.shortListed)
-			countryModel.shortListed = req.body.shortListed;
-		if (req.body.description)
-			countryModel.description = req.body.description;
-		if (req.body.taxRate)
-			countryModel.taxRate = req.body.taxRate;
-		if (req.body.currency)
-			countryModel.currency = req.body.currency;
+		let options = {
+			"new": true,
+			runValidators: true
+		};
+		CountryModel.findByIdAndUpdate(req.params.id, countryModel, options, (err, data) => {
+			if (err) return response.sendError(err, res);
 
-		// check if ID exists and its value
-		if (req.params.id) {
-			CountryModel.findByIdAndUpdate(req.params.id, countryModel, {"new": true}, (err, data) => {
-				if (err) res.send(err);
+			// country not found
+			if (!data) return response.error.NotFound(res);
 
-				// console.log('res update', data);
-				res.json({message: "Update successful", "data": data});
-			});
-		}
+			// console.log('res update', data);
+			response.success.put(data, res);
+		});
 	});
 
 	// '/v1/countries/:id' - DELETE (One)
 	api.delete('/:id', (req, res) => {
-		if (req.params.id) {
-			CountryModel.findByIdAndDelete(req.params.id, (err, data) => {
-				// 	// on error return err object
-				if (err) res.send(err);
+		CountryModel.findByIdAndDelete(req.params.id, (err, data) => {
+			// on error return err object
+			if (err) return response.sendError(err, res);
 
-				// else return message
-				res.json({message: "Document deleted successfully", "data": data});
-			});
-		}
+			// country not found
+			if (!data) return response.error.NotFound(res);
+
+			// else return message
+			response.success.delete(data, res);
+		});
 	});
 
 	// return api

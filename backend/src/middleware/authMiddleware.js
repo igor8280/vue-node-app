@@ -5,7 +5,8 @@ import config from "../config";
 const ACCESS_TOKEN_TIME = 60 * 10; // 10 min
 const REFRESH_TOKEN_TIME = 60 * 60 * 24 * 180; // 180 days
 
-let generateAccessToken = (req, res, next) => {
+// generate access and refresh token. create response object and send response
+const generateAccessToken = (req, res) => {
 	// !!! access token should be short-time living (10-15min)
 	let access_token = jwt.sign({ username: req.body.username, _id: req.body._id}, config.salt.access_token, { expiresIn: ACCESS_TOKEN_TIME });
 	// !!! refresh token should be long-time living (1-3 month)
@@ -21,11 +22,12 @@ let generateAccessToken = (req, res, next) => {
 		'token_type': 'bearer',
 		'expires_in': decode.exp - decode.iat
 	};
-
-	respond(res, token);
+	// return token
+	res.json(token);
 };
 
-let refreshAccessToken = (req, res, next, refresh_token) => {
+// verify refresh token. if valid, create new access token, response object and send response
+const refreshAccessToken = (req, res, next, refresh_token) => {
 	// validate refresh token
 	return jwt.verify(refresh_token, config.salt.access_token, (err, decoded) => {
 		if (err)
@@ -45,25 +47,25 @@ let refreshAccessToken = (req, res, next, refresh_token) => {
 			'token_type': 'bearer',
 			'expires_in': decode.exp - decode.iat
 		};
-
-		respond(res, token);
+		res.json(token);
 	});
 };
 
-// create response headers for token (can be a middleware???)
-let respond = (res, token) => {
+// set default headers for 'grant_type=password'. used as a middleware
+const setHeaders = (req, res, next) => {
 	res.append('Cache-Control', 'no-store');
 	res.append('Pragma', 'no-cache');
-
-	res.json(token);
+	next();
 };
 
 // comparing passwords with bcrypt - ASYNC
-let comparePassword = (password, hash_password) => {
+const comparePassword = (password, hash_password) => {
 	return bcrypt.compare(password, hash_password);
 };
 
-let authenticate = (req, res, next) => {
+
+// verify access token. if invalid, create error object and send response
+const authenticate = (req, res, next) => {
 	// auth middleware
 	if (req.headers.authorization) {
 		let access_token = req.headers.authorization.split(' ')[1];
@@ -79,12 +81,15 @@ let authenticate = (req, res, next) => {
 			let error = 'error ' + custom.error + ' error_description ' + custom.error_description;
 
 			res.append('WWW-Authenticate', error);
-			res.append('Cache-Control', 'no-store');
-			res.append('Pragma', 'no-cache');
+
 			res.status(401).send(custom);
 		}
 	} else {
-		res.status(401).send('No Authorization header!');
+		let error: {
+			'error': 'Not authorized!',
+			'message': 'No Authorization header!'
+		};
+		res.status(401).send(error);
 	}
 };
 
@@ -92,5 +97,6 @@ module.exports = {
 	authenticate,
 	comparePassword,
 	generateAccessToken,
-	refreshAccessToken
+	refreshAccessToken,
+	setHeaders
 };

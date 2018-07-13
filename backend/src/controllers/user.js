@@ -33,8 +33,8 @@ export default ({ config, db }) => {
 
 				// save data to database
 				userModel.save().then(() => {
-					// else return message and inserted data
-					let newUser = _.omit(userModel, ['password']);// this should work???
+					// return message and inserted data
+					let newUser = _.omit(userModel._doc, ['password']);
 
 					res.json({ 'message': 'User added successfully!', 'data': newUser});
 				}).catch((err) => {

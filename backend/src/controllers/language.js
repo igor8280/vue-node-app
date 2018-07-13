@@ -15,7 +15,7 @@ export default ({ config, db }) => {
 
 		// set data model values from request
 		LanguageModelSchema.eachPath(path => {
-			if (req.body.hasOwnProperty(path))
+			if (LanguageModelSchema.paths[path].isRequired || req.body.hasOwnProperty(path))
 				languageModel[path] = req.body[path];
 		});
 
@@ -75,7 +75,7 @@ export default ({ config, db }) => {
 
 		// set data model values from request
 		LanguageModelSchema.eachPath(path => {
-			if (LanguageModelSchema.paths[path].required || req.body.hasOwnProperty(path))
+			if (LanguageModelSchema.paths[path].isRequired || req.body.hasOwnProperty(path))
 				languageModel[path] = req.body[path];
 		});
 

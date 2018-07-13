@@ -164,7 +164,7 @@ const utils = {
 		console.error(error);
 		this.$utils('showMessage', {
 			type: 'error',
-			message: error.message + '. ' + error.description
+			message: error.body.message + '. ' + error.body.description
 		});
 	}
 };

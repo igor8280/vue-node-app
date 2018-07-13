@@ -15,7 +15,7 @@ export default ({ config, db }) => {
 
 		// set data model values from request
 		CountryModelSchema.eachPath(path => {
-			if (req.body.hasOwnProperty(path))
+			if (CountryModelSchema.paths[path].isRequired || req.body.hasOwnProperty(path))
 				countryModel[path] = req.body[path];
 		});
 
@@ -74,10 +74,9 @@ export default ({ config, db }) => {
 
 		// set data model values from request
 		CountryModelSchema.eachPath(path => {
-			if (CountryModelSchema.paths[path].required || req.body.hasOwnProperty(path))
+			if (CountryModelSchema.paths[path].isRequired || req.body.hasOwnProperty(path))
 				countryModel[path] = req.body[path];
 		});
-
 		let options = {
 			"new": true,
 			runValidators: true

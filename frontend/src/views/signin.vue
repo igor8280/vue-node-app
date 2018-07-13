@@ -49,7 +49,7 @@
 				this.$refs.form.validate((valid) => {
 					if (valid) {
 						auth.login(this, this.credentials, true).then().catch((error) => {
-							this.$utils('handleError', error.body);
+							this.$utils('handleError', error);
 						});
 					}
 				});

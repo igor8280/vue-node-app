@@ -133,36 +133,40 @@ const utils = {
 		if (data)
 			this.data = data;
 	},
-	notify(info, type = 'success') {
-		this.$notify({
-			title: info.title || type,
-			message: info.msg,
-			type: type
-		});
+	/**
+	 * show message to user
+	 * default message type is success
+	 * @param {Object} message http://element.eleme.io/#/en-US/component/message
+	 */
+	showMessage(message) {
+		if (!message.type)
+			message.type = 'success';
+
+		this.$message(message);
 	},
 	/**
 	 * browser history go back
-	 * @param {Object} notify message to show
+	 * @param {Object} message show message
 	 */
-	goBack(notify = null) {
+	goBack(message = null) {
 		this.$store.dispatch('goBack').then(route => {
-			if (notify)
-				utils.notify.call(this, notify);
+			if (message)
+				this.$utils('showMessage', message);
 
 			this.$router.replace(route);
 		});
 	},
 	/**
 	 * handlig response errors
-	 * @param error
-	 * @param notify message to show
+	 * @param {Object} error
 	 */
-	handleError(error, notify = null) {
-		console.log(error);
-		if (notify)
-			utils.notify.call(this, notify, 'error');
+	handleError(error) {
+		console.error(error);
+		this.$utils('showMessage', {
+			type: 'error',
+			message: error.message + '. ' + error.description
+		});
 	}
-
 };
 
 export default utils;

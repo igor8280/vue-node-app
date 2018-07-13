@@ -86,7 +86,9 @@
 					return response.json();
 				}).then((data) => {
 					this.country = data;
-				}, this.$utils('handleError'));
+				}, error => {
+					this.$utils('handleError', error);
+				});
 			},
 			saveCountry() {
 				this.$refs.form.validate(valid => {
@@ -95,16 +97,16 @@
 
 						if (this.formCreate) {
 							this.$api.countries.save(data).then(() => {
-								this.$utils('goBack', {msg: 'Country created successfully'});
+								this.$utils('goBack', {message: 'Country created successfully'});
 							}, (error) => {
-								this.$utils('handleError', error, {msg: 'Country creating failed'});
+								this.$utils('handleError', error);
 							});
 						}
 						else {
 							this.$api.countries.update({id: this.id}, data).then(() => {
-								this.$utils('goBack', {msg: 'Country edited successfully'});
+								this.$utils('goBack', {message: 'Country edited successfully'});
 							}, (error) => {
-								this.$utils('handleError', error, {msg: 'Country edit failed'});
+								this.$utils('handleError', error);
 							});
 						}
 					}

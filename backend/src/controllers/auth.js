@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import UserModel from '../models/user';
 import { generateAccessToken, comparePassword, refreshAccessToken} from '../middleware/authMiddleware';
+import response from '../utils/response';
 
 export default ({ config, db }) => {
 	// instance of express router
@@ -12,13 +13,13 @@ export default ({ config, db }) => {
 		if (req.body.grant_type === 'password') {
 			UserModel.findOne( {'username': req.body.username} ).then((user) => {
 				// if user does NOT exists
-				if (!user) return res.status(401).json({ message: 'Authentication failed. User not found.' });
+				if (!user) return response.error.BadUsername(res);
 
 				comparePassword(req.body.password, user.password).then(valid => {
 					if (valid)
 						generateAccessToken(req, res, next);
 					else
-						res.status(401).json({ message: 'Authentication failed. Wrong password.' });
+						response.error.BadPassword(res);
 				});
 			}).catch((err) => {
 				res.send(err);

@@ -48,15 +48,8 @@
 			login() {
 				this.$refs.form.validate((valid) => {
 					if (valid) {
-						auth.login(this, this.credentials, true).then(response => {
-							if (response.status !== 200) {
-								this.$message({
-									showClose: true,
-									type: 'error',
-									message: response.body.message,
-									duration: 2000
-								});
-							}
+						auth.login(this, this.credentials, true).then().catch((error) => {
+							this.$utils('handleError', error.body);
 						});
 					}
 				});

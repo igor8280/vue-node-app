@@ -4,9 +4,11 @@ import mongoose from 'mongoose';
 // https://www.npmjs.com/package/mongoose-aggregate-paginate/v/1.1.2
 import mongooseAggregatePaginate from 'mongoose-aggregate-paginate';
 
-let Schema = mongoose.Schema;
+import ErrorHandler from '../middleware/errorHandler';
 
-let LanguageModelSchema = new Schema({
+const Schema = mongoose.Schema;
+
+export const LanguageModelSchema = new Schema({
 	name: {type:String, required: true, maxlength: 100},
 	shortListed: {type: Boolean, default: false},
 	isoCodeOne: {type: String, minlength: 2, maxlength: 2},
@@ -16,7 +18,10 @@ let LanguageModelSchema = new Schema({
 	// picture: Schema.Types.ObjectId
 }, {collection: "languages"});
 
+// attach error handler
+new ErrorHandler(LanguageModelSchema);
+
 // add pagination plugin
 LanguageModelSchema.plugin(mongooseAggregatePaginate);
 
-module.exports = mongoose.model('LanguageModel', LanguageModelSchema);
+export default mongoose.model('LanguageModel', LanguageModelSchema);

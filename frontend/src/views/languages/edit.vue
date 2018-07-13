@@ -65,7 +65,9 @@
 					return response.json();
 				}).then((data) => {
 					this.language = data;
-				}, this.$utils('handleError'));
+				}, error => {
+					this.$utils('handleError', error);
+				});
 			},
 			saveLanguage() {
 				this.$refs.form.validate(valid => {
@@ -74,16 +76,16 @@
 
 						if (this.formCreate) {
 							this.$api.languages.save(data).then(() => {
-								this.$utils('goBack', {msg: 'Language created successfully'});
+								this.$utils('goBack', {message: 'Language created successfully'});
 							}, (error) => {
-								this.$utils('handleError', error, {msg: 'Language creating failed'});
+								this.$utils('handleError', error);
 							});
 						}
 						else {
 							this.$api.languages.update({id: this.id}, data).then(() => {
-								this.$utils('goBack', {msg: 'Language edited successfully'});
+								this.$utils('goBack', {message: 'Language edited successfully'});
 							}, (error) => {
-								this.$utils('handleError', error, {msg: 'Language edit failed'});
+								this.$utils('handleError', error);
 							});
 						}
 					}

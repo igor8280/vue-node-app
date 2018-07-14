@@ -261,8 +261,8 @@ export default {
 	 */
 	_isInvalidToken(response) {
 		const status = response.status;
-		const error = response.data.error;
+		const error = response.data.name;
 
-		return (status === 401 && (error === 'invalid_token' || error === 'expired_token'));
+		return (status === 401 && (error === 'AccessTokenExpired' || error === 'RefreshTokenExpired'));
 	}
 };

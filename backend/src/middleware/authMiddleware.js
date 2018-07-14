@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from "bcryptjs";
 import config from "../config";
+import UserModel from '../models/user';
+import response from '../utils/response';
 
 const ACCESS_TOKEN_TIME = 60 * 10; // 10 min
 const REFRESH_TOKEN_TIME = 60 * 60 * 24 * 180; // 180 days
@@ -30,11 +32,7 @@ const generateAccessToken = (req, res) => {
 const refreshAccessToken = (req, res, next, refresh_token) => {
 	// validate refresh token
 	return jwt.verify(refresh_token, config.salt.access_token, (err, decoded) => {
-		if (err)
-			return res.status(401).send({
-				error: 'expired_token',
-				error_description: 'Refresh token expired!'
-			});
+		if (err) return response.error.RefreshTokenExpired(refresh_token, res);
 
 		// create NEW access token
 		let access_token = jwt.sign({ username: decoded.username, _id: decoded._id}, config.salt.access_token, { expiresIn: ACCESS_TOKEN_TIME });
@@ -70,27 +68,21 @@ const authenticate = (req, res, next) => {
 	if (req.headers.authorization) {
 		let access_token = req.headers.authorization.split(' ')[1];
 
-		try {
-			jwt.verify(access_token, config.salt.access_token);
-			next();
-		} catch (e) {
-			let custom = {
-				'error': 'invalid_token',
-				'error_description': 'Access token expired:' + access_token
-			};
-			let error = 'error ' + custom.error + ' error_description ' + custom.error_description;
+		jwt.verify(access_token, config.salt.access_token, (err, decoded) => {
+			if (err)
+				response.error.AccessTokenExpired(access_token, res);
+			else {
+				// find user and add it to request object
+				UserModel.findOne({username: decoded.username}, (err, user) => {
+					req.user = user;
+					next();
+				});
+			}
 
-			res.append('WWW-Authenticate', error);
-
-			res.status(401).send(custom);
-		}
-	} else {
-		let error = {
-			'error': 'Not authorized!',
-			'message': 'No Authorization header!'
-		};
-		res.status(401).send(error);
+		});
 	}
+	else
+		return response.error.Unauthorized(res);
 };
 
 module.exports = {

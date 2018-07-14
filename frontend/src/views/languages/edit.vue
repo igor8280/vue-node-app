@@ -75,15 +75,17 @@
 						let data = JSON.stringify(this.language);
 
 						if (this.formCreate) {
-							this.$api.languages.save(data).then(() => {
-								this.$utils('goBack', {message: 'Language created successfully'});
+							this.$api.languages.save(data).then((response) => {
+								this.$utils('showResponse', response);
+								this.$utils('goBack');
 							}, (error) => {
 								this.$utils('handleError', error);
 							});
 						}
 						else {
-							this.$api.languages.update({id: this.id}, data).then(() => {
-								this.$utils('goBack', {message: 'Language edited successfully'});
+							this.$api.languages.update({id: this.id}, data).then((response) => {
+								this.$utils('showResponse', response);
+								this.$utils('goBack');
 							}, (error) => {
 								this.$utils('handleError', error);
 							});

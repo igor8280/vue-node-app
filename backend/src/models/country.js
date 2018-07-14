@@ -8,7 +8,7 @@ import ErrorHandler from '../middleware/errorHandler';
 
 const Schema = mongoose.Schema;
 
-export const CountryModelSchema = new Schema({
+const CountryModelSchema = new Schema({
 	name: {type:String, required: true, maxlength: 100},
 	shortListed: {type: Boolean, default: false},
 	isoCodeTwo: {type: String, minlength: 2, maxlength: 2, required: true},

@@ -96,15 +96,17 @@
 						let data = JSON.stringify(this.country);
 
 						if (this.formCreate) {
-							this.$api.countries.save(data).then(() => {
-								this.$utils('goBack', {message: 'Country created successfully'});
+							this.$api.countries.save(data).then((response) => {
+								this.$utils('showResponse', response);
+								this.$utils('goBack');
 							}, (error) => {
 								this.$utils('handleError', error);
 							});
 						}
 						else {
-							this.$api.countries.update({id: this.id}, data).then(() => {
-								this.$utils('goBack', {message: 'Country edited successfully'});
+							this.$api.countries.update({id: this.id}, data).then((response) => {
+								this.$utils('showResponse', response);
+								this.$utils('goBack');
 							}, (error) => {
 								this.$utils('handleError', error);
 							});

@@ -87,7 +87,7 @@
 						label="Short listed"
 						sortable="custom">
 					<template slot-scope="scope">
-						<i v-if="scope.row.shortlisted" class="el-icon-check" style="color: green;"></i>
+						<i v-if="scope.row.shortListed" class="el-icon-check" style="color: green;"></i>
 						<i v-else class="el-icon-close" style="color: red;"></i>
 					</template>
 				</el-table-column>

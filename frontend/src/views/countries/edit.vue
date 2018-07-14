@@ -30,7 +30,7 @@
 			</el-col>
 			<el-col :span="6">
 				<el-form-item label="Shortlisted">
-					<el-switch v-model="country.shortlisted"></el-switch>
+					<el-switch v-model="country.shortListed"></el-switch>
 				</el-form-item>
 			</el-col>
 		</el-row>
@@ -57,7 +57,7 @@
 					isoCodeThree: '',
 					description: '',
 					taxRate: null,
-					shortlisted: false,
+					shortListed: false,
 					currencyId: null
 				},
 				rules: {

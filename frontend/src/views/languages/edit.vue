@@ -13,7 +13,7 @@
 			</el-col>
 			<el-col :span="6">
 				<el-form-item label="Shortlisted">
-					<el-switch v-model="language.shortlisted"></el-switch>
+					<el-switch v-model="language.shortListed"></el-switch>
 				</el-form-item>
 			</el-col>
 		</el-row>
@@ -38,7 +38,7 @@
 					name: '',
 					isoCodeTwoB: '',
 					description: '',
-					shortlisted: false
+					shortListed: false
 				},
 				rules: {
 					name: [{required: true, max: 100, trigger: 'blur'}],

@@ -1,0 +1,53 @@
+.page-cropper {
+	padding-top: 10px;
+
+	.cropper-toolbar {
+		display: flex;
+		flex-wrap: wrap;
+
+		> div {
+			white-space: nowrap;
+
+			&:last-child {
+				flex-grow: 1;
+				text-align: right;
+			}
+
+			&:first-child {
+				text-align: center;
+			}
+		}
+
+		.select-aspect {
+			width: 100px;
+		}
+
+		.slider-box {
+			min-width: 240px;
+
+			.el-slider {
+				width: 100px;
+				float: left;
+				margin-right: 15px;
+			}
+
+			.el-button {
+				margin-right: 10px;
+				margin-left: 0px;
+				padding: 0px;
+				font-size: 18px;
+				width: 50px;
+				height: 40px;
+			}
+		}
+	}
+
+	.el-form-item__label {
+		min-height: 20px;
+	}
+
+	.preview-image {
+		width: 100%;
+		overflow: scroll;
+	}
+}

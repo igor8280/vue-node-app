@@ -6,3 +6,4 @@ backend/config/config.index.js
 .idea/
 .directory
 backend/playground
+backend/src/images

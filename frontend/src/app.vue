@@ -9,7 +9,7 @@
                     <header-main v-show="header.type === 'main'"/>
                     <header-edit v-show="header.type === 'edit'"/>
                 </el-header>
-                <el-main class="page">
+                <el-main>
                     <router-view></router-view>
                 </el-main>
             </el-container>

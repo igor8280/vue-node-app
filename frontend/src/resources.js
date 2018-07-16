@@ -7,7 +7,8 @@ const prefix = '/proxy';
 
 const resources = {
 	countries: prefix + '/countries/{id}',
-	languages: prefix + '/languages/{id}'
+	languages: prefix + '/languages/{id}',
+	images: prefix + '/images'
 };
 
 for (let key in resources)

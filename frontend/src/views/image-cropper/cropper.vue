@@ -1,69 +1,71 @@
 <template>
-    <div>
-        <el-row>
-            <el-col>
-				<el-row>
-					<el-button type="primary" @click="chooseImage">Choose Image</el-button>
-					<input id="upload" type="file" accept="image/*" @change="openImage" hidden/>
-				</el-row>
-                <el-row v-show="cropper">
-                    <el-col :span="2">
-                        <p>Aspect Ratio</p>
-                        <el-select v-model="aspectRatio" @change="changeAspectRatio">
-                            <el-option :value="null" label="Free"/>
-                            <el-option :value="1" label="1:1"/>
-                            <el-option :value="2" label="2:1"/>
-                            <el-option :value="4 / 3" label="4:3"/>
-                            <el-option :value="16 / 9" label="16:9"/>
-                            <el-option :value="21 / 31" label="21:31"/>
-                        </el-select>
-                    </el-col>
-
-                    <el-col :span="3">
-                        <p>Flip</p>
-                        <el-button @click="flipHorizontal">H</el-button>
-                        <el-button @click="flipVertical">V</el-button>
-                    </el-col>
-
-                    <el-col :span="8">
-                        <p>Zoom</p>
-                        <el-row>
-                            <el-col :span="15">
-                                <el-slider v-model="zoom" :min="1" show-input/>
-                            </el-col>
-                            <el-col :span="8" :offset="1">
-                                <el-button @click="zoomIn" icon="el-icon-zoom-in"/>
-                                <el-button @click="zoomOut" icon="el-icon-zoom-out"/>
-                            </el-col>
-                        </el-row>
-                    </el-col>
-
-                    <el-col :span="8">
-                        <p>Rotate</p>
-                        <el-row>
-                            <el-col :span="15">
-                                <el-slider v-model="rotate" :min="1" :max="360" show-input/>
-                            </el-col>
-                            <el-col :span="8" :offset="1">
-                                <el-button @click="rotateLeft"><</el-button>
-                                <el-button @click="rotateRight">></el-button>
-                            </el-col>
-                        </el-row>
-                    </el-col>
-
-                    <el-col :span="3">
-                        <p>&nbsp;</p>
-                        <el-button type="warning" @click="resetCropper(false)">Reset</el-button>
-                        <el-button type="success">OK</el-button>
-                    </el-col>
-                </el-row>
-            </el-col>
-        </el-row>
+    <div class="page-cropper">
+		<el-form label-position="top">
+			<div class="cropper-toolbar">
+				<div>
+					<el-form-item label=" ">
+						<el-button type="primary" @click="chooseImage">Choose Image</el-button>
+						<input id="upload" type="file" accept="image/*" @change="openImage" hidden/>
+					</el-form-item>
+				</div>
+				<template v-if="cropper">
+					<div>
+						<el-form-item label="Aspect ratio">
+							<el-select v-model="aspectRatio"
+									   @change="changeAspectRatio"
+									   class="select-aspect">
+								<el-option v-for="(ratio, label) in aspectRatios"
+										   :label="label"
+										   :value="ratio"
+										   :key="ratio" />
+							</el-select>
+						</el-form-item>
+					</div>
+					<div>
+						<el-form-item label="Flip">
+							<el-button @click="flipHorizontal">H</el-button>
+							<el-button @click="flipVertical">V</el-button>
+						</el-form-item>
+					</div>
+					<div>
+						<el-form-item label="Zoom" class="slider-box">
+							<el-slider v-model="zoom" :min="1" :max="50"/>
+							<el-button icon="el-icon-zoom-in" @click="zoomIn"></el-button>
+							<el-button icon="el-icon-zoom-out" @click="zoomOut"></el-button>
+						</el-form-item>
+					</div>
+					<div>
+						<el-form-item label="Rotate" class="slider-box">
+							<el-slider v-model="rotate" :min="1" :max="45" />
+							<el-button icon="el-icon-arrow-left" @click="rotateLeft"></el-button>
+							<el-button icon="el-icon-arrow-right" @click="rotateRight"></el-button>
+						</el-form-item>
+					</div>
+					<div>
+						<el-form-item label=" ">
+							<el-button type="warning" @click="resetCropper(false)">Reset</el-button>
+							<el-button @click="previewImage">Preview</el-button>
+							<el-button type="success" @click="uploadImage">Upload</el-button>
+						</el-form-item>
+					</div>
+				</template>
+			</div>
+		</el-form>
         <el-row>
             <el-col class="image-box">
                 <img id="image"/>
             </el-col>
         </el-row>
+		<el-dialog title="Image preview"
+				   :visible.sync="showPreview"
+				   fullscreen>
+			<div class="preview-image">
+				<img :src="imageData" />
+			</div>
+			<span slot="footer">
+				<el-button @click="showPreview = false">Close</el-button>
+		  	</span>
+		</el-dialog>
     </div>
 </template>
 
@@ -76,10 +78,21 @@
 			return {
 				cropper: null,
 				aspectRatio: 1,
+				aspectRatios: {
+					Free: null,
+					'1:1': 1,
+					'2:1': 2,
+					'4:3': 4 / 3,
+					'16:9': 16 / 9,
+					'21:31': 21 / 31
+				},
 				scaleX: 1,
 				scaleY: 1,
 				zoom: 10,
-				rotate: 45
+				rotate: 45,
+				inputFile: {},
+				showPreview: false,
+				imageData: null
 			};
 		},
 		mounted() {
@@ -94,6 +107,7 @@
 			},
 			openImage(input) {
 				if (input.target.files.length) {
+					this.inputFile = input.target.files[0];
 					let reader = new FileReader();
 					let image = document.querySelector('#image');
 
@@ -158,6 +172,22 @@
 			rotateRight() {
 				if (this.cropper)
 					this.cropper.rotate(this.rotate);
+			},
+			previewImage() {
+				let canvas = this.cropper.getCroppedCanvas();
+				this.imageData = canvas.toDataURL();
+				this.showPreview = true;
+			},
+			uploadImage() {
+				this.cropper.getCroppedCanvas().toBlob(blob => {
+					let formData = new FormData();
+					formData.append('image', blob, this.inputFile.name);
+					this.$api.images.save(formData).then(response => {
+						this.$utils('showResponse', response);
+					}, err => {
+						this.$utils('handleError', err);
+					});
+				});
 			}
 		}
 	};

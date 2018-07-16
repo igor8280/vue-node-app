@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="page">
 		<el-row>
 			<div class="toolbar">
 				<div>

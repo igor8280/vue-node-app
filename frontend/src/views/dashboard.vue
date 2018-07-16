@@ -1,5 +1,5 @@
 <template>
-    <section id="welcome">
+    <div class="page">
 
         <!--Page Body-->
         <section>
@@ -12,7 +12,7 @@
         </section>
         <!--End Page Body-->
 
-    </section>
+    </div>
 </template>
 
 <script>

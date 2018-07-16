@@ -1,5 +1,5 @@
 <template>
-	<el-form :model="language" :rules="rules" ref="form" :label-position="'top'">
+	<el-form class="page" :model="language" :rules="rules" ref="form" :label-position="'top'">
 		<el-row>
 			<el-col :span="6">
 				<el-form-item label="Name" prop="name">

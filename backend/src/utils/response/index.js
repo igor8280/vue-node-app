@@ -1,7 +1,8 @@
-import error, {sendError} from './error';
+import error, {defaultErrors, sendError} from './error';
 import success from './success';
 
 export default {
+	defaultErrors,
 	error,
 	sendError,
 	success,

@@ -80,6 +80,20 @@ export default {
 	NotFound(res, customData = {}) {
 		return sendError(Object.assign({}, defaultErrors.notFound, customData), res);
 	},
+	FileSizeLimit(res, limit) {
+		let error = {
+			name: 'FileSizeLimit',
+			description: 'File size limit exceeded. Maximum allowed size: ' + limit
+		};
+		return sendError(Object.assign(error, defaultErrors.badRequest), res);
+	},
+	FileType(res, types) {
+		let error = {
+			name: 'FileType',
+			description: 'File type not allowed. Allowed file types: ' + types
+		};
+		return sendError(Object.assign(error, defaultErrors.badRequest), res);
+	},
 	/**
 	 *	when error handler doesn't find error to return
 	 *	then UnknownError is used

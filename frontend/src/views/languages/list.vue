@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="page">
 		<el-row>
 			<div class="toolbar">
 				<div>
@@ -24,7 +24,7 @@
 			<!--Table-->
 			<el-table v-if="languages.length"
 					  :data="languages"
-					  :default-sort="sort"
+					  :default-sort="sortBy"
 					  ref="table"
 					  @sort-change="sort => $utils('changeSort', sort, getLanguages)"
 					  @selection-change="selectedLanguages = $utils('rowsIds', $event)"
@@ -66,7 +66,7 @@
 					label="Short listed"
 					sortable="custom">
 					<template slot-scope="scope">
-						<i v-if="scope.row.shortlisted" class="el-icon-check" style="color: green;"></i>
+						<i v-if="scope.row.shortListed" class="el-icon-check" style="color: green;"></i>
 						<i v-else class="el-icon-close" style="color: red;"></i>
 					</template>
 				</el-table-column>
@@ -87,7 +87,7 @@
 				languages: [],
 				selectedLanguages: [],
 				pagination: {},
-				sort: {
+				sortBy: {
 					prop: 'name',
 					order: 'ascending'
 				},
@@ -107,7 +107,7 @@
 			getLanguages() {
 				let params = {
 					...this.pagination,
-					sort: this.$utils('sortToString')
+					sortBy: this.$utils('sortToString')
 				};
 
 				if (this.search)
@@ -136,8 +136,8 @@
 				this.$router.push('/languages/' + id);
 			},
 			deleteLanguage() {
-				this.$api.languages.delete({id: this.selectedLanguages[0]}).then(() => {
-					this.$utils('showMessage', {message: 'Language deleted successfully'});
+				this.$api.languages.delete({id: this.selectedLanguages[0]}).then((response) => {
+					this.$utils('showResponse', response);
 					this.$refs.pagination.decreaseTotal(1);
 				}, (error) => {
 					this.$utils('handleError', error);

@@ -30,6 +30,7 @@ export default class ErrorHandler {
 		schema.post('insertMany', this.handleErrors);
 	}
 
+	// handleErrors is called only when error exist
 	handleErrors(error, res, next) {
 		let data = {
 			name: error.name,

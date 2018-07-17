@@ -17,8 +17,10 @@ export const defaultErrors = {
 		message: 'Bad request'
 	},
 	unauthorized: {
+		name: 'Authorization',
 		code: 401,
-		message: 'Authorization required'
+		message: 'Not authorized!',
+		description: 'No Authorization header!'
 	},
 	notFound: {
 		name: 'NotFound',
@@ -52,8 +54,45 @@ export default {
 			description: 'Wrong password'
 		}, res);
 	},
+	Unauthorized(res) {
+		return sendError(defaultErrors.unauthorized, res);
+	},
+	AccessTokenExpired(token, res) {
+		let error = {
+			name: 'AccessTokenExpired',
+			code: 401,
+			message: 'Invalid access token',
+			description: 'Access token expired: ' + token
+		};
+		res.append('WWW-Authenticate', 'error: ' + error.message + '. ' + error.description);
+		return sendError(error, res);
+	},
+	RefreshTokenExpired(token, res) {
+		let error = {
+			name: 'RefreshTokenExpired',
+			code: 401,
+			message: 'Invalid refresh token',
+			description: 'Refresh token expired: ' + token
+		};
+		res.append('WWW-Authenticate', 'error: ' + error.message + '. ' + error.description);
+		return sendError(error, res);
+	},
 	NotFound(res, customData = {}) {
 		return sendError(Object.assign({}, defaultErrors.notFound, customData), res);
+	},
+	FileSizeLimit(res, limit) {
+		let error = {
+			name: 'FileSizeLimit',
+			description: 'File size limit exceeded. Maximum allowed size: ' + limit
+		};
+		return sendError(Object.assign(error, defaultErrors.badRequest), res);
+	},
+	FileType(res, types) {
+		let error = {
+			name: 'FileType',
+			description: 'File type not allowed. Allowed file types: ' + types
+		};
+		return sendError(Object.assign(error, defaultErrors.badRequest), res);
 	},
 	/**
 	 *	when error handler doesn't find error to return

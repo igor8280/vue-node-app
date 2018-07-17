@@ -4,10 +4,10 @@
 			<el-col :span="8" :offset="8">
 				<el-form :model="credentials" :rules="rules" ref="form">
 					<el-form-item label="Username" prop="username">
-						<el-input v-model="credentials.username" />
+						<el-input v-model="credentials.username" autofocus/>
 					</el-form-item>
 					<el-form-item label="Password" prop="password">
-						<el-input type="password" v-model="credentials.password" />
+						<el-input type="password" v-model="credentials.password" @keyup.enter.native="login"/>
 					</el-form-item>
 				</el-form>
 			</el-col>

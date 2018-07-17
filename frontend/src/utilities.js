@@ -7,7 +7,7 @@ const utils = {
 	 */
 	sortToString(sort = null) {
 		if (!sort)
-			sort = this.sort;
+			sort = this.sortBy;
 
 		return (sort.order === 'descending' ? '-' : '') + sort.prop;
 	},
@@ -24,12 +24,12 @@ const utils = {
 	 * @param {Function} callback execute after change
 	 */
 	changeSort(newSort, callback) {
-		if (newSort.prop !== this.sort.prop || newSort.order !== this.sort.order) {
+		if (newSort.prop !== this.sortBy.prop || newSort.order !== this.sortBy.order) {
 			if (newSort.prop)
-				this.sort.prop = newSort.prop;
+				this.sortBy.prop = newSort.prop;
 
-			this.sort.order = (newSort.order === null) ? 'ascending' : newSort.order;
-			this.$refs.table.sort(this.sort.prop, this.sort.order);
+			this.sortBy.order = (newSort.order === null) ? 'ascending' : newSort.order;
+			this.$refs.table.sort(this.sortBy.prop, this.sortBy.order);
 			callback();
 		}
 	},
@@ -56,7 +56,7 @@ const utils = {
 	 * auto collect, arrange and save data in store
 	 * this function is trying to collect:
 	 *		pagination,
-	 *		sort,
+	 *		sortBy,
 	 *		search,
 	 *		filter,
 	 *		data
@@ -73,7 +73,7 @@ const utils = {
 
 		// auto check for this properties
 		let pag = this.pagination;
-		let sort = this.sort;
+		let sortBy = this.sortBy;
 		let search = this.search;
 		let filter = this.filter;
 		let data = this.data;
@@ -85,8 +85,8 @@ const utils = {
 			if (pag.page)
 				session.page = pag.page;
 		}
-		if (sort)
-			local.sort = sort;
+		if (sortBy)
+			local.sortBy = sortBy;
 		if (search)
 			session.search = search;
 		if (filter)
@@ -115,7 +115,7 @@ const utils = {
 
 		// auto check for this properties
 		let pag = this.pagination;
-		let sort = local.sort;
+		let sortBy = local.sortBy;
 		let search = session.search;
 		let filter = session.filter;
 		let data = session.data;
@@ -124,8 +124,8 @@ const utils = {
 			pag.limit = local.limit;
 		if (session.page)
 			pag.page = session.page;
-		if (sort)
-			this.sort = sort;
+		if (sortBy)
+			this.sortBy = sortBy;
 		if (search)
 			this.search = search;
 		if (filter)
@@ -143,6 +143,17 @@ const utils = {
 			message.type = 'success';
 
 		this.$message(message);
+	},
+	/**
+	 * show message to user
+	 * default message type is success
+	 * @param {Object} message http://element.eleme.io/#/en-US/component/message
+	 */
+	showResponse(response) {
+		this.$message({
+			type: 'success',
+			message: response.body.message
+		});
 	},
 	/**
 	 * browser history go back

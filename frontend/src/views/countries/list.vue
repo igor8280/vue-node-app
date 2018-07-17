@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="page">
 		<el-row>
 			<div class="toolbar">
 				<div>
@@ -24,7 +24,7 @@
 			<!--Table-->
 			<el-table v-if="countries.length"
 					  :data="countries"
-					  :default-sort="sort"
+					  :default-sort="sortBy"
 					  ref="table"
 					  @sort-change="sort => $utils('changeSort', sort, getCountries)"
 					  @selection-change="selectedCountries = $utils('rowsIds', $event)"
@@ -87,7 +87,7 @@
 						label="Short listed"
 						sortable="custom">
 					<template slot-scope="scope">
-						<i v-if="scope.row.shortlisted" class="el-icon-check" style="color: green;"></i>
+						<i v-if="scope.row.shortListed" class="el-icon-check" style="color: green;"></i>
 						<i v-else class="el-icon-close" style="color: red;"></i>
 					</template>
 				</el-table-column>
@@ -108,7 +108,7 @@
 				countries: [],
 				selectedCountries: [],
 				pagination: {},
-				sort: {
+				sortBy: {
 					prop: 'name',
 					order: 'ascending'
 				},
@@ -128,7 +128,7 @@
 			getCountries() {
 				let params = {
 					...this.pagination,
-					sort: this.$utils('sortToString')
+					sortBy: this.$utils('sortToString')
 				};
 
 				if (this.search)
@@ -139,9 +139,9 @@
 					return response.json();
 				}).then((data) => {
 					this.countries = data.content;
-					this.pagination.page = +data.page;
-					this.pagination.limit = +data.limit;
-					this.pagination.total = +data.total;
+					this.pagination.page = data.page;
+					this.pagination.limit = data.limit;
+					this.pagination.total = data.total;
 					this.gridLoad = false;
 					this.$utils('autoSave');
 				}, (error) => {
@@ -157,8 +157,8 @@
 				this.$router.push(/countries/ + id);
 			},
 			deleteCountry() {
-				this.$api.countries.delete({id: this.selectedCountries[0]}).then(() => {
-					this.$utils('showMessage', {message: 'Country deleted successfully'});
+				this.$api.countries.delete({id: this.selectedCountries[0]}).then((response) => {
+					this.$utils('showResponse', response);
 					this.$refs.pagination.decreaseTotal(1);
 				}, (error) => {
 					this.$utils('handleError', error);

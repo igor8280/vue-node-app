@@ -1,5 +1,5 @@
 <template>
-	<el-form :model="language" :rules="rules" ref="form" :label-position="'top'">
+	<el-form class="page" :model="language" :rules="rules" ref="form" :label-position="'top'">
 		<el-row>
 			<el-col :span="6">
 				<el-form-item label="Name" prop="name">
@@ -13,7 +13,7 @@
 			</el-col>
 			<el-col :span="6">
 				<el-form-item label="Shortlisted">
-					<el-switch v-model="language.shortlisted"></el-switch>
+					<el-switch v-model="language.shortListed"></el-switch>
 				</el-form-item>
 			</el-col>
 		</el-row>
@@ -38,7 +38,7 @@
 					name: '',
 					isoCodeTwoB: '',
 					description: '',
-					shortlisted: false
+					shortListed: false
 				},
 				rules: {
 					name: [{required: true, max: 100, trigger: 'blur'}],
@@ -75,15 +75,17 @@
 						let data = JSON.stringify(this.language);
 
 						if (this.formCreate) {
-							this.$api.languages.save(data).then(() => {
-								this.$utils('goBack', {message: 'Language created successfully'});
+							this.$api.languages.save(data).then((response) => {
+								this.$utils('showResponse', response);
+								this.$utils('goBack');
 							}, (error) => {
 								this.$utils('handleError', error);
 							});
 						}
 						else {
-							this.$api.languages.update({id: this.id}, data).then(() => {
-								this.$utils('goBack', {message: 'Language edited successfully'});
+							this.$api.languages.update({id: this.id}, data).then((response) => {
+								this.$utils('showResponse', response);
+								this.$utils('goBack');
 							}, (error) => {
 								this.$utils('handleError', error);
 							});

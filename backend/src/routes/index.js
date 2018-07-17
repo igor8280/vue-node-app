@@ -8,6 +8,7 @@ import languageCtrl from '../controllers/language';
 import countryCtrl from '../controllers/country';
 import userCtrl from '../controllers/user';
 import authCtrl from '../controllers/auth';
+import imageCtrl from '../controllers/image';
 
 let router = express();
 
@@ -20,8 +21,9 @@ initDb(db => {
     //  api routes v1 (/v1)
 	router.use('/languages', authenticate, languageCtrl({ config, db }));
 	router.use('/countries', authenticate, countryCtrl({ config, db }));
-	router.use('/users', userCtrl({ config, db }));
 	router.use('/auth', authCtrl({ config, db }));
+	router.use('/users', userCtrl({ config, db }));
+	router.use('/images', authenticate, imageCtrl({ config, db }));
 });
 
 export default router;

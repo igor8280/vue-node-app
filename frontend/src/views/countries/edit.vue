@@ -1,5 +1,5 @@
 <template>
-	<el-form :model="country" :rules="rules" ref="form" :label-position="'top'">
+	<el-form class="page" :model="country" :rules="rules" ref="form" :label-position="'top'">
 		<el-row>
 			<el-col :span="6">
 				<el-form-item label="Name" prop="name">
@@ -30,7 +30,7 @@
 			</el-col>
 			<el-col :span="6">
 				<el-form-item label="Shortlisted">
-					<el-switch v-model="country.shortlisted"></el-switch>
+					<el-switch v-model="country.shortListed"></el-switch>
 				</el-form-item>
 			</el-col>
 		</el-row>
@@ -57,7 +57,7 @@
 					isoCodeThree: '',
 					description: '',
 					taxRate: null,
-					shortlisted: false,
+					shortListed: false,
 					currencyId: null
 				},
 				rules: {
@@ -96,15 +96,17 @@
 						let data = JSON.stringify(this.country);
 
 						if (this.formCreate) {
-							this.$api.countries.save(data).then(() => {
-								this.$utils('goBack', {message: 'Country created successfully'});
+							this.$api.countries.save(data).then((response) => {
+								this.$utils('showResponse', response);
+								this.$utils('goBack');
 							}, (error) => {
 								this.$utils('handleError', error);
 							});
 						}
 						else {
-							this.$api.countries.update({id: this.id}, data).then(() => {
-								this.$utils('goBack', {message: 'Country edited successfully'});
+							this.$api.countries.update({id: this.id}, data).then((response) => {
+								this.$utils('showResponse', response);
+								this.$utils('goBack');
 							}, (error) => {
 								this.$utils('handleError', error);
 							});

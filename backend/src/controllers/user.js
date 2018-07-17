@@ -2,6 +2,9 @@ import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import _ from 'lodash';
 import UserModel from '../models/user';
+import { authenticate } from '../middleware/authMiddleware';
+import utils from '../utils';
+let response = utils.response;
 
 export default ({ config, db }) => {
 	// instance of express router
@@ -11,35 +14,25 @@ export default ({ config, db }) => {
 
 	// 'v1/users/' - creating endpoint for POST (Create)
 	api.post('/', (req, res) => {
-		// create data model
-		let userModel = new UserModel();
+		// create data model with values from request
+		let userModel = utils.fillModel(UserModel, req.body);
 
-		// set data model values from request
-		// required attributes
-		userModel.username = req.body.username;
 		bcrypt.genSalt(10, (err, salt) => {
 			bcrypt.hash(req.body.password, salt, (err, hash) => {
 				// ovo je pitanje da li ovako treba da se ispita greska - odnosi se na lose hash-iranje
 				if (err) return res.send(err);
 
 				userModel.password = hash;
-				// optional attributes
-				if (req.body.firstName)
-					userModel.firstName = req.body.firstName;
-				if (req.body.lastName)
-					userModel.lastName = req.body.lastName;
-				if (req.body.roles)
-					userModel.roles = req.body.roles;
 
 				// save data to database
 				userModel.save().then(() => {
 					// return message and inserted data
 					let newUser = _.omit(userModel._doc, ['password']);
 
-					res.json({ 'message': 'User added successfully!', 'data': newUser});
+					response.success.post(newUser, res);
 				}).catch((err) => {
 					// on error return err object
-					if (err) res.send(err);
+					res.send(err);
 				});
 			});
 		});
@@ -70,17 +63,23 @@ export default ({ config, db }) => {
 	// 	});
 	// });
 
+	// return user data
+	api.get('/me', authenticate, (req, res) => {
+		return res.send(_.omit(req.user._doc, ['password']));
+	});
+
 	// 'v1/users/:id' - Read one
 	api.get('/:id', (req, res) => {
-		if (req.params.id) {
-			UserModel.findById(req.params.id, (err, country) => {
-				// on error return err object
-				if (err) res.send(err);
+		UserModel.findById(req.params.id, (err, user) => {
+			// on error return err object
+			if (err) return res.send(err);
 
-				// return ONE document
-				res.json(country);
-			});
-		}
+			// user not found
+			if (!user) return response.error.NotFound(res);
+
+			// return ONE document
+			res.json(_.omit(user._doc, ['password']));
+		});
 	});
 
 	// 'v1/countries/:id - PUT (Update)

@@ -64,25 +64,30 @@ const comparePassword = (password, hash_password) => {
 
 // verify access token. if invalid, create error object and send response
 const authenticate = (req, res, next) => {
-	// auth middleware
-	if (req.headers.authorization) {
-		let access_token = req.headers.authorization.split(' ')[1];
+	// check ENVIRONMENT (for testing disable auth)
+	if (config.env === 'test')
+		next();
+	else {
+		// auth middleware
+		if (req.headers.authorization) {
+			let access_token = req.headers.authorization.split(' ')[1];
 
-		jwt.verify(access_token, config.salt.access_token, (err, decoded) => {
-			if (err)
-				response.error.AccessTokenExpired(access_token, res);
-			else {
-				// find user and add it to request object
-				UserModel.findOne({username: decoded.username}, (err, user) => {
-					req.user = user;
-					next();
-				});
-			}
+			jwt.verify(access_token, config.salt.access_token, (err, decoded) => {
+				if (err)
+					response.error.AccessTokenExpired(access_token, res);
+				else {
+					// find user and add it to request object
+					UserModel.findOne({username: decoded.username}, (err, user) => {
+						req.user = user;
+						next();
+					});
+				}
 
-		});
+			});
+		}
+		else
+			return response.error.Unauthorized(res);
 	}
-	else
-		return response.error.Unauthorized(res);
 };
 
 module.exports = {

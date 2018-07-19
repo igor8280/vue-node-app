@@ -105,6 +105,7 @@ export default {
 	*	mongoose errors
  	*/
 	CastError(customData) {
+		console.log('customData', customData);
 		return Object.assign({},  defaultErrors.badRequest, customData);
 	},
 	ValidationError(customData) {
@@ -119,5 +120,8 @@ export default {
  */
 
 export const sendError = (error, res)  => {
+	// if there is no error.code (it's 'Bad request' - bad ObjectId() )
+	if (!error.code)
+		error.code = 400;
 	return res ? res.status(error.code).send(error) : error;
 };

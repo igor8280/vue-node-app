@@ -2,7 +2,6 @@ import http from 'http';
 import express from 'express';
 import bodyParser from 'body-parser';
 
-// import { authenticate } from './middleware/authMiddleware';
 import { setHeaders } from './middleware/authMiddleware';
 
 import swaggerUI from 'swagger-ui-express';
@@ -29,13 +28,6 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument, {
 	}
 }));
 
-// auth middleware
-// app.use((req, res, next) => {
-// 	if (req.originalUrl === '/v1/auth/login')
-// 		next();
-// 	else
-// 		authenticate(req, res, next);
-// });
 // set response headers
 app.use(setHeaders);
 

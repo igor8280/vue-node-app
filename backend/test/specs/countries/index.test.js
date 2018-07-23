@@ -2,8 +2,8 @@ import expect from 'expect';
 import request from 'supertest';
 import {ObjectID} from 'mongodb';
 
-import app from '../../src/index';
-import Country from '../../src/models/country';
+import app from '../../../src/index';
+import Country from '../../../src/models/country';
 
 const countries = [{
 	_id: new ObjectID(),
@@ -126,8 +126,8 @@ describe('REST Country endpoints', () => {
 					}
 
 					Country.findById(hexId).then((country) => {
-						// expect(country).toNotExist(); ??? ZASTO OVO NE RADI ???
-						expect(country).toBeFalsy(); // OVO JE ALIAS ZA toNotExist() ???
+						expect(country).toBeNull();
+						// expect(country).toBeFalsy(); // OVO JE ALIAS ZA toNotExist() ???
 						done();
 					}).catch((e) => done(e));
 				});
@@ -173,8 +173,8 @@ describe('REST Country endpoints', () => {
 					expect(res.body.data.name).toBe(updatedCountry.name);
 					expect(res.body.data.isoCodeTwo).toBe(updatedCountry.isoCodeTwo);
 					expect(res.body.data.isoCodeThree).toBe(updatedCountry.isoCodeThree);
-					// expect(res.body.data.isoCodeTwo).toBeA('string'); // PUCA!!! ???
-					// expect(res.body.data.isoCodeThree).toBeA('string');
+					expect(typeof res.body.data.isoCodeTwo).toBe('string'); // PUCA!!! ???
+					expect(typeof res.body.data.isoCodeThree).toBe('string');
 				})
 				.end(done);
 		});

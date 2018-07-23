@@ -9,7 +9,7 @@
     "start": "NODE_ENV=production pm2 start dist",
     "prestart": "npm run -s build",
     "lint": "eslint src",
-    "test": "export NODE_ENV=test || SET NODE_ENV=test && mocha --require babel-register tests/**/*.test.js",
+    "test": "export NODE_ENV=test && mocha",
     "test-watch": "nodemon --exec 'npm test'"
   },
   "eslintConfig": {

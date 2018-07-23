@@ -22,7 +22,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/21</span>
+        <span class='fraction'>0/23</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
@@ -37,7 +37,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/21</span>
+        <span class='fraction'>0/23</span>
       </div>
     </div>
     <p class="quiet">
@@ -163,7 +163,9 @@
 <a name='L115'></a><a href='#L115'>115</a>
 <a name='L116'></a><a href='#L116'>116</a>
 <a name='L117'></a><a href='#L117'>117</a>
-<a name='L118'></a><a href='#L118'>118</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -263,11 +265,13 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -281,7 +285,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
-	&lt;el-form :model="country" :rules="rules" ref="form" :label-position="'top'"&gt;
+	&lt;el-form class="page" :model="country" :rules="rules" ref="form" :label-position="'top'"&gt;
 		&lt;el-row&gt;
 			&lt;el-col :span="6"&gt;
 				&lt;el-form-item label="Name" prop="name"&gt;
@@ -312,7 +316,7 @@
 			&lt;/el-col&gt;
 			&lt;el-col :span="6"&gt;
 				&lt;el-form-item label="Shortlisted"&gt;
-					&lt;el-switch v-model="country.shortlisted"&gt;&lt;/el-switch&gt;
+					&lt;el-switch v-model="country.shortListed"&gt;&lt;/el-switch&gt;
 				&lt;/el-form-item&gt;
 			&lt;/el-col&gt;
 		&lt;/el-row&gt;
@@ -339,7 +343,7 @@
 					isoCodeThree: '',
 					description: '',
 					taxRate: null,
-					shortlisted: false,
+					shortListed: false,
 					currencyId: null
 				},
 				rules: {
@@ -378,15 +382,17 @@
 <span class="cstat-no" title="statement not covered" >						let data = JSON.stringify(this.country);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >						if (this.formCreate) {</span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >							this.$api.countries.save(data).then(() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >								this.$utils('goBack', {message: 'Country created successfully'});</span>
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >							this.$api.countries.save(data).then((response) =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >								this.$utils('showResponse', response);</span>
+<span class="cstat-no" title="statement not covered" >								this.$utils('goBack');</span>
 <span class="fstat-no" title="function not covered" >							}, (error) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >								this.$utils('handleError', error);</span>
 							});
 						}
 						else {
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >							this.$api.countries.update({id: this.id}, data).then(() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >								this.$utils('goBack', {message: 'Country edited successfully'});</span>
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >							this.$api.countries.update({id: this.id}, data).then((response) =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >								this.$utils('showResponse', response);</span>
+<span class="cstat-no" title="statement not covered" >								this.$utils('goBack');</span>
 <span class="fstat-no" title="function not covered" >							}, (error) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >								this.$utils('handleError', error);</span>
 							});
@@ -403,7 +409,7 @@
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Jul 17 2018 12:58:21 GMT+0200 (CEST)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Jul 23 2018 09:55:45 GMT+0200 (Central European Summer Time)
 </div>
 </div>
 <script src="../../../prettify.js"></script>

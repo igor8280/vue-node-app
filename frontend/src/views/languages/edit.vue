@@ -46,51 +46,60 @@
 				}
 			};
 		},
+		computed: {
+			title() {
+				if (this.formCreate)
+					return 'Add Language';
+				else
+					return 'Edit Language';
+			}
+		},
 		mounted() {
 			this.id = this.$route.params.id;
 			this.formCreate = this.id === 'create';
 
 			this.$store.dispatch('setHeader', {
 				type: 'edit',
-				title: ((this.formCreate) ? 'Add' : 'Edit') + ' Language',
+				title: this.title,
 				save: this.saveLanguage
 			});
 
-			if (!this.formCreate)
-				this.getLanguage();
+			this.getLanguage();
 		},
 		methods: {
 			getLanguage() {
-				this.$api.languages.get({id: this.id}).then((response) => {
-					return response.json();
-				}).then((data) => {
-					this.language = data;
-				}, error => {
-					this.$utils('handleError', error);
-				});
+				if (!this.formCreate) {
+					return this.$api.languages.get({id: this.id}).then((response) => {
+						return response.json();
+					}).then((data) => {
+						this.language = data;
+					}, error => {
+						this.$utils('handleError', error);
+					});
+				}
 			},
 			saveLanguage() {
-				this.$refs.form.validate(valid => {
-					if (valid) {
-						let data = JSON.stringify(this.language);
+				return this.$refs.form.validate().then(() => {
+					let data = JSON.stringify(this.language);
 
-						if (this.formCreate) {
-							this.$api.languages.save(data).then((response) => {
-								this.$utils('showResponse', response);
-								this.$utils('goBack');
-							}, (error) => {
-								this.$utils('handleError', error);
-							});
-						}
-						else {
-							this.$api.languages.update({id: this.id}, data).then((response) => {
-								this.$utils('showResponse', response);
-								this.$utils('goBack');
-							}, (error) => {
-								this.$utils('handleError', error);
-							});
-						}
+					if (this.formCreate) {
+						return this.$api.languages.save(data).then((response) => {
+							this.$utils('showResponse', response);
+							this.$utils('goBack');
+						}, (error) => {
+							this.$utils('handleError', error);
+						});
 					}
+					else {
+						return this.$api.languages.update({id: this.id}, data).then((response) => {
+							this.$utils('showResponse', response);
+							this.$utils('goBack');
+						}, (error) => {
+							this.$utils('handleError', error);
+						});
+					}
+				}).catch((err) => {
+					return err;
 				});
 			}
 		}

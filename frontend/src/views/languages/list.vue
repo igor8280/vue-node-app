@@ -114,7 +114,7 @@
 					params.search = this.search;
 
 				this.gridLoad = true;
-				this.$api.languages.get(params).then((response) => {
+				return this.$api.languages.get(params).then((response) => {
 					return response.json();
 				}).then((data) => {
 					this.languages = data.content;
@@ -129,14 +129,14 @@
 			},
 			getLanguagesBySearch() {
 				this.pagination.page = 1;
-				this.getLanguages();
+				return this.getLanguages();
 			},
 			edit(id) {
 				this.$store.commit('saveRoute', this.$route.path);
 				this.$router.push('/languages/' + id);
 			},
 			deleteLanguage() {
-				this.$api.languages.delete({id: this.selectedLanguages[0]}).then((response) => {
+				return this.$api.languages.delete({id: this.selectedLanguages[0]}).then((response) => {
 					this.$utils('showResponse', response);
 					this.$refs.pagination.decreaseTotal(1);
 				}, (error) => {

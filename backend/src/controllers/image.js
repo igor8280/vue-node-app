@@ -63,6 +63,8 @@ export default ({ config, db }) => {
 					width: 360,
 					height: 240,
 					ignoreAspect: true
+				}).then(info => {
+					console.log(info);
 				});
 				response.success.upload(req.file.filename, res);
 			}

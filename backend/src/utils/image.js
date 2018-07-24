@@ -39,11 +39,19 @@ const resize = options => {
 		else if (options.hasOwnProperty('outputName'))
 			output = dir + options.outputName;
 
-		img.toFile(output, err => {
+		img.toFile(output, (err, info) => {
 			if (err)
 				reject(err);
-			else
-				resolve(output);
+			else {
+				ext = path.extname(output);
+				name = path.basename(output, ext);
+
+				info.path = output;
+				info.name = name;
+				info.ext = ext;
+
+				resolve(info);
+			}
 		});
 	});
 };

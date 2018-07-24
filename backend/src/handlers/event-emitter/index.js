@@ -1,4 +1,4 @@
-const EventEmitter = require('events');
+import EventEmitter from 'events';
 
 class Events extends EventEmitter {
 	constructor () {
@@ -12,8 +12,8 @@ class Events extends EventEmitter {
 	onEvent(event, data) {
 		this.on(event, data);
 	}
-};
+}
 
 const events = new Events();
 
-module.exports = events;
+export default events;

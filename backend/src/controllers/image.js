@@ -4,7 +4,7 @@ import path from 'path';
 import response from '../utils/response';
 import image from '../utils/image';
 
-let imagesPath = __dirname +  '/../images/';
+let imagesPath = __dirname +  '/../public/images/original/';
 let maxFileSize = 1024 * 1024;	// 1mb
 let allowedMimeTypes = {
 	'image/png': 'png',
@@ -60,9 +60,10 @@ export default ({ config, db }) => {
 			else {
 				image.resize({
 					path: imagesPath + req.file.filename,
-					width: 360,
-					height: 240,
-					ignoreAspect: true
+					width: 640,
+					height: 480,
+					ignoreAspect: true,
+					output: imagesPath + '../resize/640x480/' + req.file.filename
 				}).then(info => {
 					console.log(info);
 				});

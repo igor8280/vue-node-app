@@ -90,7 +90,7 @@ const authenticate = (req, res, next) => {
 	}
 };
 
-module.exports = {
+export {
 	authenticate,
 	comparePassword,
 	generateAccessToken,

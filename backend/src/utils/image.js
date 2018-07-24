@@ -1,5 +1,5 @@
-const path = require('path');
-const sharp = require('sharp');
+import path from 'path';
+import sharp from 'sharp';
 
 /**
  *

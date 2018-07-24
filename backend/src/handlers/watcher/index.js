@@ -1,7 +1,7 @@
-const path = require('path');
-const watcher = require('node-watch');
-const emitter = require('../event-emitter/');
-const config = require('../event-emitter/config.events');
+import path from 'path';
+import watcher from 'node-watch';
+import emitter from '../event-emitter/';
+import config from '../event-emitter/config.events';
 
 // console.log('config', config);
 
@@ -34,4 +34,4 @@ class FileWatcher {
 	};
 }
 
-module.exports = FileWatcher;
+export default FileWatcher;

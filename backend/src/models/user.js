@@ -10,4 +10,4 @@ const UserModelSchema = new Schema({
 	roles: [String]
 }, {'collection': 'users'});
 
-module.exports = mongoose.model('UserModel', UserModelSchema);
+export default mongoose.model('UserModel', UserModelSchema);

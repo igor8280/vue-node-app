@@ -22,9 +22,16 @@ const config = {
 		'index': false,
 		'maxAge': '1y',
 		'redirect': false,
-		setHeaders: function (res, path, stat) {
+		setHeaders: res => {
 			res.set('x-timestamp', Date.now())
 		}
+	},
+	pathPublicEpg: {
+		'dotfiles': 'ignore',
+		'etag': false,
+		'extensions': ['xls', 'xlsx'],
+		'index': false,
+		'redirect': false
 	}
 };
 

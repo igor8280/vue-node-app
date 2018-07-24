@@ -2,6 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import path from 'path';
 import response from '../utils/response';
+import image from '../utils/image';
 
 let imagesPath = __dirname +  '/../images/';
 let maxFileSize = 1024 * 1024;	// 1mb
@@ -56,8 +57,15 @@ export default ({ config, db }) => {
 						response.sendError(response.defaultErrors.badRequest, res);
 				}
 			}
-			else
+			else {
+				image.resize({
+					path: imagesPath + req.file.filename,
+					width: 360,
+					height: 240,
+					ignoreAspect: true
+				});
 				response.success.upload(req.file.filename, res);
+			}
 		});
 	});
 

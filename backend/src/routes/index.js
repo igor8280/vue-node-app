@@ -1,8 +1,8 @@
 import express from 'express';
 import config from '../config';
 import initDb from '../db';
-import middleware from '../middleware';
-import { authenticate } from '../middleware/authMiddleware';
+import middleware from '../middlewares';
+import { authenticate } from '../middlewares/authMiddleware';
 
 import languageCtrl from '../controllers/language';
 import countryCtrl from '../controllers/country';
@@ -15,7 +15,7 @@ let router = express();
 // connect to db
 initDb(db => {
 
-    // internal middleware
+    // internal middlewares
     router.use(middleware({ config, db }));
 
     //  api routes v1 (/v1)

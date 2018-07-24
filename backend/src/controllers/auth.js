@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import UserModel from '../models/user';
-import { generateAccessToken, comparePassword, refreshAccessToken} from '../middleware/authMiddleware';
+import { generateAccessToken, comparePassword, refreshAccessToken} from '../middlewares/authMiddleware';
 import response from '../utils/response';
 
 export default ({ config, db }) => {

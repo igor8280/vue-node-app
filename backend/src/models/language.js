@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 // https://www.npmjs.com/package/mongoose-aggregate-paginate/v/1.1.2
 import mongooseAggregatePaginate from 'mongoose-aggregate-paginate';
 
-import ErrorHandler from '../middleware/errorHandler';
+import ErrorHandler from '../middlewares/errorHandler';
 
 const Schema = mongoose.Schema;
 

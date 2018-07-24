@@ -1,4 +1,4 @@
-const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true';
+const hotMiddlewareScript = 'webpack-hot-middlewares/client?path=/__webpack_hmr&timeout=20000&reload=true';
 
 const webpack = require('webpack');
 const merge = require('webpack-merge');

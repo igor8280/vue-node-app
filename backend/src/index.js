@@ -1,14 +1,19 @@
 import http from 'http';
+import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import { setHeaders } from './middleware/authMiddleware';
-
+import { setHeaders } from './middlewares/authMiddleware';
 import swaggerUI from 'swagger-ui-express';
 import swaggerDocument from './swagger';
 
 import config from './config';
 import routes from './routes';
+
+import Watcher from './handlers/watcher';
+// create new Watcher instance; start watch process
+let fileWatcher = new Watcher(path.join(__dirname, 'public/epg'));
+fileWatcher.watch();
 
 let app = express();
 app.server = http.createServer(app);
@@ -17,6 +22,11 @@ app.server = http.createServer(app);
 app.use(bodyParser.json({
 	limit: config.bodyLimit
 }));
+
+
+// middleware for serving static files
+app.use(express.static(path.join(__dirname, 'public/images'), config.pathPublicImages));
+app.use(express.static(path.join(__dirname, 'public/epg'), config.pathPublicEpg));
 
 // swagger
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument, {

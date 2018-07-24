@@ -2,7 +2,7 @@ import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import _ from 'lodash';
 import UserModel from '../models/user';
-import { authenticate } from '../middleware/authMiddleware';
+import { authenticate } from '../middlewares/authMiddleware';
 import utils from '../utils';
 let response = utils.response;
 

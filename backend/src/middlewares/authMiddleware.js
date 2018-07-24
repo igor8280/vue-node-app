@@ -49,7 +49,7 @@ const refreshAccessToken = (req, res, next, refresh_token) => {
 	});
 };
 
-// set default headers for 'grant_type=password'. used as a middleware
+// set default headers for 'grant_type=password'. used as a middlewares
 const setHeaders = (req, res, next) => {
 	res.append('Cache-Control', 'no-store');
 	res.append('Pragma', 'no-cache');
@@ -68,7 +68,7 @@ const authenticate = (req, res, next) => {
 	if (config.env === 'test')
 		next();
 	else {
-		// auth middleware
+		// auth middlewares
 		if (req.headers.authorization) {
 			let access_token = req.headers.authorization.split(' ')[1];
 
@@ -90,7 +90,7 @@ const authenticate = (req, res, next) => {
 	}
 };
 
-module.exports = {
+export {
 	authenticate,
 	comparePassword,
 	generateAccessToken,

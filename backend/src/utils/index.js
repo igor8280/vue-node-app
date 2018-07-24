@@ -1,8 +1,10 @@
 import _ from 'lodash';
 import response from './response/index';
+import image from './image';
 
 export default {
 	response,
+	image,
 	/**
 	 * create model and fill it with given data
 	 * @param Model mongoose model

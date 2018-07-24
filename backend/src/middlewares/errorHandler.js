@@ -8,13 +8,13 @@ export default class ErrorHandler {
 		// Attach error handler on schema
 		// http://mongoosejs.com/docs/middleware.html#error-handling
 
-		// document middleware
+		// document middlewares
 		// schema.post('init', this.handleErrors);
 		// schema.post('validate', this.handleErrors);
 		schema.post('save', this.handleErrors);
 		schema.post('remove', this.handleErrors);
 
-		// query middleware
+		// query middlewares
 		schema.post('find', this.handleErrors);
 		schema.post('findOne', this.handleErrors);
 		schema.post('findOneAndRemove', this.handleErrors);
@@ -23,10 +23,10 @@ export default class ErrorHandler {
 		schema.post('updateOne', this.handleErrors);
 		schema.post('updateMany', this.handleErrors);
 
-		//aggregate middleware
+		//aggregate middlewares
 		schema.post('aggregate', this.handleErrors);
 
-		// model middleware
+		// model middlewares
 		schema.post('insertMany', this.handleErrors);
 	}
 

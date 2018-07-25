@@ -1,28 +1,22 @@
-import emitter from '../event-emitter';
-import events from '../event-emitter/config.events';
-
-import foxCrime from './fox_crime';
-// import fox_crime from './fox_crime';
+import FoxCrime from './fox_crime';
 import Parser1 from './parser1';
 import Parser2 from './parser2';
 
-// let fox_crime = new FoxCrime();
-// console.log('sdffdsafadsfadsdsfa', FoxCrime);
 class Parsers {
 	constructor() {}
 	
-	setParsersEvents() {
-		emitter.onEvent(events.FOX_CRIME, foxCrime.parseJson); // OVO RADI
-		// emitter.onEvent(events.PARSE_DATA, this.callParser);
+	getParser(name) {
+		switch (name) {
+			case 'fox_crime':
+				return new FoxCrime();
+			case 'parser1':
+				return new Parser1();
+			case 'parser2':
+				return new Parser2();
+			default:
+				return {'error': true, code: 500, 'message': `There is no parser with name '${name}'`};
+		}
 	}
-	//
-	// callParser(data) {
-	// 	console.log('data from parsers/index', data.parserName);
-	// 	let fun = data.parserName + '.parseJson';
-	// 	let test = Function(fun);
-	// 	console.log('test', test);
-	// 	test().bind(fox_crime);
-	// }
 }
 
 export default Parsers;

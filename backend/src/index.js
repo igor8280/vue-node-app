@@ -12,11 +12,9 @@ import swaggerDocument from './swagger';
 import config from './config';
 import routes from './routes';
 
-// start watcher, jmporter and set parsers
-const fileProcessor = new FileProcessor();
-fileProcessor.startFileWatcher(path.join(__dirname, 'public/epg'));
-fileProcessor.setImporter();
-fileProcessor.setParsers();
+// setup file processing
+const fileProcessor = new FileProcessor(path.join(__dirname, 'public/epg'));
+fileProcessor.setup();
 
 let app = express();
 app.server = http.createServer(app);

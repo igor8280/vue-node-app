@@ -3,40 +3,46 @@ import Importer from '../importer';
 import Parsers from '../parsers';
 
 import emitter from '../event-emitter';
-import events from '../event-emitter/config.events';
 
 class FileProcessor {
-	constructor() {}
+	constructor(watchPath) {
+		this.parsers = new Parsers();
+		this.watchPath = watchPath;
+	}
 
-	startFileWatcher(path) {
-		// create new Watcher instance; start watch process
-		let watcher = new Watcher(path);
+	// create new Watcher instance; start watch process
+	startFileWatcher() {
+		let watcher = new Watcher(this.watchPath);
 		watcher.watch();
 	}
 
+	// create new Importer instance
 	setImporter() {
-		// create new Importer instance
 		let importer = new Importer();
 
 		// All file processing events
-		emitter.onEvent(events.IMPORT, (data) => {
+		emitter.onEvent(emitter.events.IMPORT, (data) => {
+			console.log('data', data);
+			// read data from file (only xls for now). Importer will be augmented
 			let jsonData = importer.readFile(data.filePath);
-			// console.log('json', json);
-			console.log('json from file-proc', data);
-			emitter.emitEvent(events[data.eventName], jsonData);
-			// let json = {
-			// 	'parserName': data.eventName.toLowerCase(),
-			// 	'json': jsonData
-			// };
-			//
-			// emitter.emitEvent(events.PARSE_DATA, json);
+
+			// get 'correct' parser based on event name
+			let parser = this.parsers.getParser(emitter.events[data.eventName]);
+
+			if (parser.error) {
+				// error handler for parser
+				console.log('parser', parser);
+				return parser;
+			}
+			else
+				parser.parseJson(jsonData); // do parsing
 		});
 	}
 
-	// include parsers
-	setParsers() {
-		let parsers = new Parsers();
-		parsers.setParsersEvents();
+	// simplification for file processing setup
+	setup() {
+		this.startFileWatcher();
+		this.setImporter();
 	}
 }
 

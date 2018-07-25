@@ -6,6 +6,4 @@ class FoxCrime {
 	}
 }
 
-const foxCrime = new FoxCrime();
-
-export default foxCrime;
+export default FoxCrime;

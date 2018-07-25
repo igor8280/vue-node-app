@@ -1,9 +1,7 @@
+import _ from 'lodash';
 import path from 'path';
 import watcher from 'node-watch';
 import emitter from '../event-emitter/';
-import events from '../event-emitter/config.events';
-
-// console.log('config', config);
 
 class Watcher {
 	constructor(dirFile) {
@@ -21,22 +19,24 @@ class Watcher {
 
 	watch() {
 		watcher(this.folderFile, {recursive: true}, (event, filePath) => {
+			console.log('event', event);
 			if (event === 'update') {
-				// console.log('event', event, filePath);
 				let eventName = this.getDir(filePath).toUpperCase();
-				// console.log('eventName', eventName);
-				if (filePath && events[eventName]) {
+				console.log('eventName', eventName);
+				if (filePath && _.isUndefined(emitter.events[eventName]) === false ) {
 					// create data object with file path and event name
 					let data = {
 						filePath,
 						eventName
 					};
-					// console.log('filePath', filePath);
-					// console.log('config[eventName]', config[eventName]);
-					emitter.emitEvent(events.IMPORT, data);
+					emitter.emitEvent(emitter.events.IMPORT, data);
 				}
-				else
-					console.log('No directory or file!');
+				else {
+					// should be an Error handler...
+					let error = {'error': true, 'code': 404, 'message': 'Event not found!', 'eventName': eventName};
+					console.log('No directory or file!', error);
+					return error;
+				}
 			}
 		});
 	};

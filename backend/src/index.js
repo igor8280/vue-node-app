@@ -3,6 +3,8 @@ import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
 
+import FileProcessor from './handlers/file-processor';
+
 import { setHeaders } from './middlewares/authMiddleware';
 import swaggerUI from 'swagger-ui-express';
 import swaggerDocument from './swagger';
@@ -10,10 +12,11 @@ import swaggerDocument from './swagger';
 import config from './config';
 import routes from './routes';
 
-import Watcher from './handlers/watcher';
-// create new Watcher instance; start watch process
-let fileWatcher = new Watcher(path.join(__dirname, 'public/epg'));
-fileWatcher.watch();
+// start watcher, jmporter and set parsers
+const fileProcessor = new FileProcessor();
+fileProcessor.startFileWatcher(path.join(__dirname, 'public/epg'));
+fileProcessor.setImporter();
+fileProcessor.setParsers();
 
 let app = express();
 app.server = http.createServer(app);

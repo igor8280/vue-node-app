@@ -5,5 +5,5 @@ frontend/dist
 backend/config/config.index.js
 .idea/
 .directory
-
+backend/src/public
 backend/src/images

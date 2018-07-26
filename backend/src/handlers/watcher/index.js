@@ -1,7 +1,7 @@
+import _ from 'lodash';
 import path from 'path';
 import watcher from 'node-watch';
 import emitter from '../event-emitter/';
-import config from '../event-emitter/config.events';
 
 // console.log('config', config);
 
@@ -11,6 +11,9 @@ class FileWatcher {
 	};
 
 	getDir(dirPathString) {
+		if (!dirPathString)
+			return;
+
 		let dirPath = path.parse(dirPathString).dir;
 		let curDir = dirPath.split('/').pop();
 		return curDir.toUpperCase();
@@ -18,17 +21,24 @@ class FileWatcher {
 
 	watch() {
 		watcher(this.folderFile, {recursive: true}, (event, filePath) => {
+			console.log('event', event);
 			if (event === 'update') {
-				// console.log('event', event, filePath);
-				let eventName = this.getDir(filePath);
+				let eventName = this.getDir(filePath).toUpperCase();
 				console.log('eventName', eventName);
-				if (filePath && config[eventName]) {
-					// console.log('filePath', filePath);
-					// console.log('config[eventName]', config[eventName]);
-					emitter.emitEvent(config.IMPORT, filePath);
+				if (filePath && _.isUndefined(emitter.events[eventName]) === false ) {
+					// create data object with file path and event name
+					let data = {
+						filePath,
+						eventName
+					};
+					emitter.emitEvent(emitter.events.IMPORT, data);
 				}
-				else
-					console.log('No directory or file!');
+				else {
+					// should be an Error handler...
+					let error = {'error': true, 'code': 404, 'message': 'Event not found!', 'eventName': eventName};
+					console.log('No directory or file!', error);
+					return error;
+				}
 			}
 		});
 	};

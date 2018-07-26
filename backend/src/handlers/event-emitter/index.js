@@ -1,19 +1,22 @@
 import EventEmitter from 'events';
+import events from './events';
 
-class Events extends EventEmitter {
+class Emitter extends EventEmitter {
 	constructor () {
 		super();
-		console.log('constructor', this);
+		this.events = events;
 	}
 
 	emitEvent(event, data) {
 		this.emit(event, data);
 	}
-	onEvent(event, data) {
-		this.on(event, data);
+	onEvent(event, cb) {
+		this.on(event, cb);
 	}
 }
 
-const events = new Events();
+// by creating an instance before exporting it,
+// we make sure that this is the only instance (singletone)
+const emitter = new Emitter();
 
-export default events;
+export default emitter;

@@ -187,7 +187,7 @@
 					}, err => {
 						this.$utils('handleError', err);
 					});
-				});
+				}, this.inputFile.type);
 			}
 		}
 	};

@@ -3,7 +3,9 @@ import path from 'path';
 import watcher from 'node-watch';
 import emitter from '../event-emitter/';
 
-class Watcher {
+// console.log('config', config);
+
+class FileWatcher {
 	constructor(dirFile) {
 		this.folderFile = dirFile;
 	};
@@ -42,4 +44,4 @@ class Watcher {
 	};
 }
 
-export default Watcher;
+export default FileWatcher;

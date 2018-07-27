@@ -4,6 +4,17 @@ import Parser2 from './parser2';
 
 class Parsers {
 	constructor() {}
+
+	// getParser(name) {
+	// 	if (name) {
+	// 		return import('./fox_crime/index.js').then(module => {
+	// 			console.log('module', module);
+	// 			return new module();
+	// 		}).catch(err => {
+	// 			console.log('eeeeeerrrrrrroooooorrrrrrr', err);
+	// 		});
+	// 	}
+	// }
 	
 	getParser(name) {
 		switch (name) {

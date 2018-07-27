@@ -27,15 +27,21 @@ class FileProcessor {
 			let jsonData = importer.readFile(data.filePath);
 
 			// get 'correct' parser based on event name
-			let parser = this.parsers.getParser(emitter.events[data.eventName]);
-
-			if (parser.error) {
-				// error handler for parser
+			this.parsers.getParser(emitter.events[data.eventName]).then(parser => {
 				console.log('parser', parser);
-				return parser;
-			}
-			else
-				parser.parseJson(jsonData); // do parsing
+				parser.parseJson();
+			}).catch(error => {
+				console.log('errorrrrrrrrr', error);
+			});
+			// let parser = this.parsers.getParser(emitter.events[data.eventName]);
+			//
+			// if (parser.error) {
+			// 	// error handler for parser
+			// 	console.log('parser', parser);
+			// 	return parser;
+			// }
+			// else
+			// 	parser.parseJson(jsonData); // do parsing
 		});
 	}
 

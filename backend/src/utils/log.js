@@ -3,6 +3,9 @@ import winston, { format } from 'winston';
 const dir = __dirname + '/../logs/';
 
 const Logger = level => {
+	/**
+	 * error log in format {name: ErrorName, message: ErrorMessage}
+	 */
 	let logFormat = format.printf(data => {
 		let date = new Date();
 		let year = date.getFullYear();
@@ -10,7 +13,7 @@ const Logger = level => {
 		let day = ('0' + date.getDate()).slice(-2);
 		let hour = ('0' + date.getHours()).slice(-2);
 		let minut = ('0' + date.getMinutes()).slice(-2);
-		let second = ('0' + date.getMinutes()).slice(-2);
+		let second = ('0' + date.getSeconds()).slice(-2);
 		let timestamp = `${day}/${month}/${year} ${hour}:${minut}:${second}`;
 
 		return `${timestamp} [${data.name}]: ${data.message}`;
@@ -18,7 +21,6 @@ const Logger = level => {
 
 	return winston.createLogger({
 		level,
-		timestamp: true,
 		format: logFormat,
 		transports: [
 			new winston.transports.File({

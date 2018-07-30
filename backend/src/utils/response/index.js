@@ -1,6 +1,5 @@
 import error, {defaultErrors, sendError} from './error';
 import success from './success';
-import log from '../log';
 
 export default {
 	defaultErrors,

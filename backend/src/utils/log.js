@@ -1,11 +1,9 @@
 import winston, { format } from 'winston';
 
+const dir = __dirname + '/../logs/';
+
 const Logger = level => {
-	let dir = __dirname + '/../logs/';
-
 	let logFormat = format.printf(data => {
-		console.log('WINSTON', typeof data);
-
 		let date = new Date();
 		let year = date.getFullYear();
 		let month = ('0' + (date.getMonth()+1)).slice(-2);
@@ -35,6 +33,10 @@ const Logger = level => {
 const error = Logger('error');
 const warn = Logger('warn');
 const info = Logger('info');
+
+winston.exceptions.handle(
+	new winston.transports.File({ filename: dir + 'exceptions.log' })
+);
 
 export default {
 	error: error.error,

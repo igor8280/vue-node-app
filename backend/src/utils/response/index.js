@@ -39,9 +39,6 @@ export default {
 	 * @param doc
 	 */
 	findById(err, doc) {
-		log.error(err);
-		log.info(new Error("My Error"));
-		log.warn({name: 'test', message: 'msg....'});
 		// on error return err object
 		if (err) return sendError(err, this);
 

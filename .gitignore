@@ -7,3 +7,4 @@ backend/config/config.index.js
 .directory
 backend/src/public
 backend/src/images
+backend/src/logs

@@ -27,7 +27,8 @@ const Logger = level => {
 				dirname: dir,
 				filename: level + '.log',
 				level
-			})
+			}),
+			new winston.transports.Console()
 		]
 	});
 };

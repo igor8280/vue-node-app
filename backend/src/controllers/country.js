@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import CountryModel from '../models/country';
 import utils from '../utils';
-let response = utils.response;
+
+const response = utils.response;
 
 export default ({ config, db }) => {
 	// instance of express router

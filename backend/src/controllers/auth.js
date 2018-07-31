@@ -1,7 +1,10 @@
 import { Router } from 'express';
 import UserModel from '../models/user';
-import { generateAccessToken, comparePassword, refreshAccessToken} from '../middlewares/authMiddleware';
-import response from '../utils/response';
+import utils from '../utils';
+
+// create local instance -- shortcut
+const response = utils.response;
+const auth = utils.auth;
 
 export default ({ config, db }) => {
 	// instance of express router
@@ -15,9 +18,9 @@ export default ({ config, db }) => {
 				// if user does NOT exists
 				if (!user) return response.error.BadUsername(res);
 
-				comparePassword(req.body.password, user.password).then(valid => {
+				auth.comparePassword(req.body.password, user.password).then(valid => {
 					if (valid)
-						generateAccessToken(req, res, next);
+						auth.generateAccessToken(req, res, next);
 					else
 						response.error.BadPassword(res);
 				});
@@ -27,7 +30,7 @@ export default ({ config, db }) => {
 		}
 		// ask for new access token (based on info in refresh token)
 		else if (req.body.grant_type === 'refresh_token') {
-			refreshAccessToken(req, res, next, req.body.refresh_token);
+			auth.refreshAccessToken(req, res, next, req.body.refresh_token);
 		}
 	});
 

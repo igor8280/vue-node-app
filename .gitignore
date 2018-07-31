@@ -2,7 +2,7 @@ backend/node_modules
 frontend/node_modules
 backend/dist
 frontend/dist
-backend/config/config.index.js
+backend/config/index.js
 .idea/
 .directory
 backend/src/public

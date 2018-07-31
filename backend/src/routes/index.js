@@ -22,7 +22,7 @@ initDb(db => {
 	router.use('/languages', authenticate, languageCtrl({ config, db }));
 	router.use('/countries', authenticate, countryCtrl({ config, db }));
 	router.use('/auth', authCtrl({ config, db }));
-	router.use('/users', userCtrl({ config, db }));
+	router.use('/users', userCtrl({ config, db })); // SHOULD HAVE AUTH ALSO!!!
 	router.use('/images', authenticate, imageCtrl({ config, db }));
 });
 

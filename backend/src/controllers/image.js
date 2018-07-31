@@ -2,7 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import path from 'path';
 import response from '../utils/response';
-import image from '../utils/image';
+import { imageHandler } from '../handlers';
 
 let imagesPath = __dirname +  '/../public/images/original/';
 let maxFileSize = 1024 * 1024;	// 1mb
@@ -58,7 +58,7 @@ export default ({ config, db }) => {
 				}
 			}
 			else {
-				image.resize({
+				imageHandler.resize({
 					path: imagesPath + req.file.filename,
 					width: 640,
 					height: 480,

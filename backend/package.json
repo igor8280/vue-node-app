@@ -41,6 +41,7 @@
     "sharp": "^0.20.5",
     "swagger-ui-express": "^3.0.10",
     "validator": "^10.4.0",
+    "winston": "^3.0.0",
     "xlsx": "^0.13.2"
   },
   "devDependencies": {

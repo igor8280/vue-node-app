@@ -3,7 +3,7 @@ class Parsers {
 
 	getParser(name) {
 		if (name) {
-			return import('./fox_crime/index.js').then(module => {
+			return import(`./${name}`).then(module => {
 				return new module.default();
 			}).catch(err => {
 				console.log('error', err);

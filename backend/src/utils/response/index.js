@@ -26,13 +26,11 @@ const paginate = (err, content, pages, total, options, res) => {
 };
 /**
  * standard response when we want to find one document
- * IMPORTANT NOTE:
- * 		this function must be called with bind(res)
- * 		where res is express response object
  * @param err
  * @param doc
+ * @param res express response object
  */
-const findById = (err, doc) => {
+const findById = (err, doc, res) => {
 	// on error return err object
 	if (err) return sendError(err, this);
 
@@ -40,58 +38,52 @@ const findById = (err, doc) => {
 	if (!doc) return error.NotFound(this);
 
 	// return document
-	return this.json(doc);
+	return res.json(doc);
 };
 /**
  * standard response when we want to save document
- * IMPORTANT NOTE:
- * 		this function must be called with bind(res)
- * 		where res is express response object
  * @param err
  * @param doc
+ * @param res express response object
  */
-const save = (err, doc) => {
+const save = (err, doc, res) => {
 	// on error return err object
-	if (err) return sendError(err, this);
+	if (err) return sendError(err, res);
 
 	// return document
-	return success.post(doc, this);
+	return success.post(doc, res);
 };
 /**
  * standard response when we want to update one document
- * IMPORTANT NOTE:
- * 		this function must be called with bind(res)
- * 		where res is express response object
  * @param err
  * @param doc
+ * @param res express response object
  */
-const findByIdAndUpdate = (err, doc) => {
+const findByIdAndUpdate = (err, doc, res) => {
 	// on error return err object
-	if (err) return sendError(err, this);
+	if (err) return sendError(err, res);
 
 	// document not found
-	if (!doc) return error.NotFound(this);
+	if (!doc) return error.NotFound(res);
 
 	// return document
-	return success.put(doc, this);
+	return success.put(doc, res);
 };
 /**
  * standard response when we want to delete one document
- * IMPORTANT NOTE:
- * 		this function must be called with bind(res)
- * 		where res is express response object
  * @param err
  * @param doc
+ * @param res express response object
  */
-const findByIdAndDelete = (err, doc) => {
+const findByIdAndDelete = (err, doc, res) => {
 	// on error return err object
-	if (err) return sendError(err, this);
+	if (err) return sendError(err, res);
 
 	// document not found
-	if (!doc) return error.NotFound(this);
+	if (!doc) return error.NotFound(res);
 
 	// return document
-	return success.delete(doc, this);
+	return success.delete(doc, res);
 };
 
 export default {

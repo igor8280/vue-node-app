@@ -15,7 +15,7 @@ export default ({ config, db }) => {
 		let languageModel = utils.fillModel(LanguageModel, req.body);
 
 		// save data to database
-		languageModel.save(response.save.bind(res));
+		languageModel.save((...args) => response.save(...args, res));
 	});
 
 	// 'v1/languages' - create endpoint for GET (Read)
@@ -38,7 +38,7 @@ export default ({ config, db }) => {
 
 	// 'v1/languages/:id' - Read one
 	api.get('/:id', (req, res) => {
-		LanguageModel.findById(req.params.id, response.findById.bind(res));
+		LanguageModel.findById(req.params.id, (...args) => response.findById(...args, res));
 	});
 
 	// 'v1/languages/:id - PUT (Update)
@@ -50,12 +50,12 @@ export default ({ config, db }) => {
 			"new": true,
 			runValidators: true
 		};
-		LanguageModel.findByIdAndUpdate(req.params.id, languageModel, options, response.findByIdAndUpdate.bind(res));
+		LanguageModel.findByIdAndUpdate(req.params.id, languageModel, options, (...args) => response.findByIdAndUpdate(...args, res));
 	});
 
 	// '/v1/languages/:id' - DELETE (One)
 	api.delete('/:id', (req, res) => {
-		LanguageModel.findByIdAndDelete(req.params.id, response.findByIdAndDelete.bind(res));
+		LanguageModel.findByIdAndDelete(req.params.id, (...args) => response.findByIdAndDelete(...args, res));
 	});
 
 	// return api

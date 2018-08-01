@@ -2,7 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import path from 'path';
 import response from '../utils/response';
-import { imageHandler } from '../handlers';
+import imageHandler from '../handlers/image';
 
 let imagesPath = __dirname +  '/../public/images/original/';
 let maxFileSize = 1024 * 1024;	// 1mb

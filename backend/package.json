@@ -5,7 +5,7 @@
   "main": "dist",
   "scripts": {
     "dev": "NODE_ENV=development nodemon -w src --exec \"babel-node src --presets es2015,stage-0 --plugins dynamic-import-node\"",
-    "build": "babel src -s -D -d dist --presets es2015,stage-0 && npm run pm2start",
+    "build": "babel src -s -D -d dist --presets es2015,stage-0 && npm install && npm run pm2start",
     "pm2start": "pm2 start ecosystem.config.js --env production",
     "start": "NODE_ENV=production pm2 start dist",
     "prestart": "npm run -s build",

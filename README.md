@@ -8,9 +8,9 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-Latest LTS version of [NodeJS](https://nodejs.org/en/)
-Advanced Production Process Manager for Node.js [PM2](https://pm2.io/runtime/). (can be installed globally)
-Database [MongoDB](https://www.mongodb.com/) (there should be 2 database per instance. one for production and another one for testing!!!)
+- Latest LTS version of [NodeJS](https://nodejs.org/en/)
+- Advanced Production Process Manager for Node.js [PM2](https://pm2.io/runtime/). (can be installed globally)
+- Database [MongoDB](https://www.mongodb.com/) (there should be 2 database per instance. one for production and another one for testing!!!)
 
 (installing NodeJS and MongoDB vary depending on the OS...)
 

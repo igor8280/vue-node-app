@@ -32,10 +32,10 @@ const paginate = (err, content, pages, total, options, res) => {
  */
 const findById = (err, doc, res) => {
 	// on error return err object
-	if (err) return sendError(err, this);
+	if (err) return sendError(err, res);
 
 	// document not found
-	if (!doc) return error.NotFound(this);
+	if (!doc) return error.NotFound(res);
 
 	// return document
 	return res.json(doc);

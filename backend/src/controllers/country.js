@@ -16,7 +16,7 @@ export default ({ config, db }) => {
 		let countryModel = utils.fillModel(CountryModel, req.body);
 
 		// save data to database
-		countryModel.save((...args) => response.save(...args, res));
+		countryModel.save((err, doc) => response.save(err, doc, res));
 	});
 
 	// 'v1/countries' - create endpoint for GET (Read)
@@ -39,7 +39,7 @@ export default ({ config, db }) => {
 
 	// 'v1/countries/:id' - Read one
 	api.get('/:id', (req, res) => {
-		CountryModel.findById(req.params.id, (...args) => response.findById(...args, res));
+		CountryModel.findById(req.params.id, (err, doc) => response.findById(err, doc, res));
 	});
 
 	// 'v1/countries/:id - PUT (Update)
@@ -51,12 +51,12 @@ export default ({ config, db }) => {
 			"new": true,
 			runValidators: true
 		};
-		CountryModel.findByIdAndUpdate(req.params.id, countryModel, options, (...args) => response.findByIdAndUpdate(...args, res));
+		CountryModel.findByIdAndUpdate(req.params.id, countryModel, options, (err, doc) => response.findByIdAndUpdate(err, doc, res));
 	});
 
 	// '/v1/countries/:id' - DELETE (One)
 	api.delete('/:id', (req, res) => {
-		CountryModel.findByIdAndDelete(req.params.id, (...args) => response.findByIdAndDelete(...args, res));
+		CountryModel.findByIdAndDelete(req.params.id, (err, doc) => response.findByIdAndDelete(err, doc, res));
 	});
 
 	// return api

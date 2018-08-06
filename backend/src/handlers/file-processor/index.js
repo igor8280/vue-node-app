@@ -24,14 +24,16 @@ class FileProcessor {
 		emitter.onEvent(emitter.events.IMPORT, (data) => {
 			console.log('data', data);
 			// read data from file (only xls for now). Importer will be augmented
-			let jsonData = importer.readFile(data.filePath);
-
-			// get 'correct' parser based on event name
-			this.parsers.getParser(emitter.events[data.eventName]).then(parser => {
-				console.log('parser', parser);
-				parser.parseJson();
+			importer.readFile(data.filePath).then(jsonData => {
+				// get 'correct' parser based on event name
+				this.parsers.getParser(emitter.events[data.eventName]).then(parser => {
+					console.log('parser', parser);
+					parser.parseJson(jsonData);
+				}).catch(error => {
+					console.log('errorrrrrrrrr', error);
+				});
 			}).catch(error => {
-				console.log('errorrrrrrrrr', error);
+				console.log('Error reading file: ', error.message);
 			});
 		});
 	}

@@ -2,6 +2,24 @@ import http from 'http';
 import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
+import fs from 'fs';
+
+process.on('uncaughtException', (err) => {
+	console.log('Name: ', err.name);
+	console.log('Message: ', err.message);
+	console.log('Stack: ', err.stack);
+
+	let date = new Date();
+
+	let log = date.toLocaleDateString('sr') + ' ' + date.toLocaleTimeString('sr') + '\n';
+	log += err.stack + '\n';
+
+	fs.appendFileSync(__dirname + '/logs/exceptions.log', log, (err) => {
+		console.log(err);
+	});
+});
+
+throw new Error('x');
 
 import FileProcessor from './handlers/file-processor';
 

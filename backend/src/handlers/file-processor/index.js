@@ -22,7 +22,7 @@ class FileProcessor {
 
 		// All file processing events
 		emitter.onEvent(emitter.events.IMPORT, (data) => {
-			console.log('data', data);
+			console.log('data123', data);
 			// read data from file (only xls for now). Importer will be augmented
 			importer.readFile(data.filePath).then(jsonData => {
 				// get 'correct' parser based on event name

@@ -1,6 +1,6 @@
 import winston, { format } from 'winston';
 
-const dir = __dirname + '/../logs/';
+const dir = __dirname + '/../../logs/';
 
 const Logger = level => {
 	/**

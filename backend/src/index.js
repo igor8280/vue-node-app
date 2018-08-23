@@ -19,8 +19,6 @@ process.on('uncaughtException', (err) => {
 	});
 });
 
-throw new Error('x');
-
 import FileProcessor from './handlers/file-processor';
 
 import { setHeaders } from './middlewares/authMiddleware';

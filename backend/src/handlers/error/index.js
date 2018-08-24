@@ -1,4 +1,5 @@
 import winston, { format } from 'winston';
+import 'winston-daily-rotate-file';
 
 const dir = __dirname + '/../../logs/';
 
@@ -23,9 +24,12 @@ const Logger = level => {
 		level,
 		format: logFormat,
 		transports: [
-			new winston.transports.File({
-				dirname: dir,
-				filename: level + '.log',
+			new winston.transports.DailyRotateFile({
+				dirname: dir + `${level}`,
+				filename: level + '-%DATE%.log',
+				datePattern: 'YYYY-MM-DD-HH',
+				maxSize: '20m',
+				maxFiles: '14d',
 				level
 			}),
 			new winston.transports.Console()

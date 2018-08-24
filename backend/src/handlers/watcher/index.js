@@ -38,7 +38,7 @@ class FileWatcher {
 				else {
 					// should be an Error handler...
 					let error = {'file': 'handlers/watcher/index.js', 'function': 'watch()', 'message': 'Event not found!', 'eventName': eventName};
-					Logger.error(new Error(JSON.stringify(error)));
+					Logger.info(new Error(JSON.stringify(error)));
 					// console.log('No directory or file!', error);
 					// return error;
 				}
